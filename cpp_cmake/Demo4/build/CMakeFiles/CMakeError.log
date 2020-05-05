@@ -1,0 +1,52 @@
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: /cygdrive/e/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/cygdrive/c/Strawberry/c/bin/gmake.exe cmTC_2c4c1/fast 
+C:/Strawberry/c/bin/gmake -f CMakeFiles/cmTC_2c4c1.dir/build.make CMakeFiles/cmTC_2c4c1.dir/build
+gmake[1]: Entering directory 'E:/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp'
+gmake[1]: *** No rule to make target '/usr/share/cmake-3.14.5/Modules/CMakeCCompilerABI.c', needed by 'CMakeFiles/cmTC_2c4c1.dir/CMakeCCompilerABI.c.o'.  Stop.
+gmake[1]: Leaving directory 'E:/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp'
+makefile:121: recipe for target 'cmTC_2c4c1/fast' failed
+gmake: *** [cmTC_2c4c1/fast] Error 2
+
+
+
+Detecting C [-std=c11] compiler features failed to compile with the following output:
+Change Dir: /cygdrive/e/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/cygdrive/c/Strawberry/c/bin/gmake.exe cmTC_54466/fast 
+C:/Strawberry/c/bin/gmake -f CMakeFiles/cmTC_54466.dir/build.make CMakeFiles/cmTC_54466.dir/build
+gmake[1]: Entering directory 'E:/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp'
+gmake[1]: *** No rule to make target '/cygdrive/e/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/feature_tests.c', needed by 'CMakeFiles/cmTC_54466.dir/feature_tests.c.o'.  Stop.
+gmake[1]: Leaving directory 'E:/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp'
+makefile:121: recipe for target 'cmTC_54466/fast' failed
+gmake: *** [cmTC_54466/fast] Error 2
+
+
+
+Detecting CXX compiler ABI info failed to compile with the following output:
+Change Dir: /cygdrive/e/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/cygdrive/c/Strawberry/c/bin/gmake.exe cmTC_ed38c/fast 
+C:/Strawberry/c/bin/gmake -f CMakeFiles/cmTC_ed38c.dir/build.make CMakeFiles/cmTC_ed38c.dir/build
+gmake[1]: Entering directory 'E:/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp'
+gmake[1]: *** No rule to make target '/usr/share/cmake-3.14.5/Modules/CMakeCXXCompilerABI.cpp', needed by 'CMakeFiles/cmTC_ed38c.dir/CMakeCXXCompilerABI.cpp.o'.  Stop.
+gmake[1]: Leaving directory 'E:/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp'
+makefile:121: recipe for target 'cmTC_ed38c/fast' failed
+gmake: *** [cmTC_ed38c/fast] Error 2
+
+
+
+Detecting CXX [-std=c++2a] compiler features failed to compile with the following output:
+Change Dir: /cygdrive/e/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/cygdrive/c/Strawberry/c/bin/gmake.exe cmTC_bd3b3/fast 
+C:/Strawberry/c/bin/gmake -f CMakeFiles/cmTC_bd3b3.dir/build.make CMakeFiles/cmTC_bd3b3.dir/build
+gmake[1]: Entering directory 'E:/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp'
+gmake[1]: *** No rule to make target '/cygdrive/e/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/feature_tests.cxx', needed by 'CMakeFiles/cmTC_bd3b3.dir/feature_tests.cxx.o'.  Stop.
+gmake[1]: Leaving directory 'E:/git/cpp/cpp_cmake/Demo4/build/CMakeFiles/CMakeTmp'
+makefile:121: recipe for target 'cmTC_bd3b3/fast' failed
+gmake: *** [cmTC_bd3b3/fast] Error 2
+
+
+

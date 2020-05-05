@@ -1,0 +1,25 @@
+gcc -o test.exe test.c add.c add.h    可以
+
+
+gcc -o test.exe test.c add.c  可以
+
+
+makefile方式，新建一个文件输入如下内容，注意tab格式：
+
+cc = gcc
+prom=test
+obj=add.o test.o
+$(prom): $(obj)
+	$(cc) -o $(prom)  $(obj)
+test.o: test.c add.h
+	$(cc)  -c test.c -o test.o
+add.o: add.h add.c
+	$(cc)  -c add.c -o add.o
+clean:
+	rm -f *.o
+然后另存为所有文件，最后make 就可以编译为可执行程序了
+
+
+
+或者直接 cmake .
+make

@@ -1,0 +1,4 @@
+g++ testjson.cpp -o jsonTest -std=c++11  -I C:/work/gitwork/cpp/cpp_cmake/Demo5/include/  -L C:/work/gitwork/cpp/cpp_cmake/Demo5/lib/  -ljsoncpp
+
+
+如果使用cmake方法，得到的结果同上述g++命令一样，cmake 无非是生成跨平台的cmake文件

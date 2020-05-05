@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/e/git/cpp/cpp_cmake/Demo2/libs/mymath.h
+stdio.h
+-
+
+/cygdrive/e/git/cpp/cpp_cmake/Demo2/src/main.cpp
+stdio.h
+-
+stdlib.h
+-
+../libs/mymath.h
+/cygdrive/e/git/cpp/cpp_cmake/Demo2/libs/mymath.h
+

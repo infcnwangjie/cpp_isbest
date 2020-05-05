@@ -1,0 +1,10 @@
+　1、./configure 是用来检测你的安装平台的目标特征的。比如它会检测你是不是有CC或GCC，并不是需要CC或GCC，它是个shell脚本。
+
+　　2、make 是用来编译的，它从Makefile中读取指令，然后编译。
+
+　　3、make install是用来安装的，它也从Makefile中读取指令，安装到指定的位置。
+
+　　注意：AUTOMAKE和AUTOCONF是非常有用的用来发布C程序的东西。
+————————————————
+版权声明：本文为CSDN博主「小岛上的八块腹肌」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/weixin_41245919/article/details/82778476

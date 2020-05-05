@@ -1,0 +1,1 @@
+/usr/bin/c++.exe   -Wl,--enable-auto-import CMakeFiles/Demo2.dir/main.cpp.o  -o ../bin/Demo2.exe -Wl,--out-implib,../bin/libDemo2.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -L/cygdrive/e/git/cpp/cpp_cmake/Demo2/libs ../libs/liblibmymath.a.a 

@@ -1,0 +1,2 @@
+/usr/bin/ar.exe qc liblibmymath.a.a  CMakeFiles/libmymath.a.dir/mymath.c.o
+/usr/bin/ranlib.exe liblibmymath.a.a

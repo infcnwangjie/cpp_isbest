@@ -1,0 +1,8 @@
+/cygdrive/e/git/cpp/cpp_cmake/Demo2/build/CMakeFiles/rebuild_cache.dir
+/cygdrive/e/git/cpp/cpp_cmake/Demo2/build/CMakeFiles/edit_cache.dir
+/cygdrive/e/git/cpp/cpp_cmake/Demo2/build/src/CMakeFiles/rebuild_cache.dir
+/cygdrive/e/git/cpp/cpp_cmake/Demo2/build/src/CMakeFiles/Demo2.dir
+/cygdrive/e/git/cpp/cpp_cmake/Demo2/build/src/CMakeFiles/edit_cache.dir
+/cygdrive/e/git/cpp/cpp_cmake/Demo2/build/libs/CMakeFiles/rebuild_cache.dir
+/cygdrive/e/git/cpp/cpp_cmake/Demo2/build/libs/CMakeFiles/libmymath.a.dir
+/cygdrive/e/git/cpp/cpp_cmake/Demo2/build/libs/CMakeFiles/edit_cache.dir

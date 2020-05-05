@@ -1,0 +1,2 @@
+gcc -fPIC -shared -o libDemo.dll Test.c
+解释：-fPIC 打包位置无关  -shared 打包动态链接库 

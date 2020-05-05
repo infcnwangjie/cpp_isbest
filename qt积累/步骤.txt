@@ -1,0 +1,4 @@
+1、如何打开页面designer？
+文件-》新建文件和项目-》QT-》QtDesigner Form 就可以进入designer页面了
+
+2、如何如何将ui转为cpp?
