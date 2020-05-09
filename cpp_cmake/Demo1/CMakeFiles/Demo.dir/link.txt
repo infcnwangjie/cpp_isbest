@@ -1,1 +1,0 @@
-/usr/bin/c++.exe   -Wl,--enable-auto-import CMakeFiles/Demo.dir/main.cpp.o CMakeFiles/Demo.dir/MathFunctions.cpp.o  -o Demo.exe -Wl,--out-implib,libDemo.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

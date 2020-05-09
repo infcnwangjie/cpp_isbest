@@ -1,3 +1,0 @@
-/cygdrive/e/git/cpp/cpp_cmake/Demo3/build/CMakeFiles/rebuild_cache.dir
-/cygdrive/e/git/cpp/cpp_cmake/Demo3/build/CMakeFiles/Demo.dir
-/cygdrive/e/git/cpp/cpp_cmake/Demo3/build/CMakeFiles/edit_cache.dir
