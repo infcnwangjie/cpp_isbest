@@ -49,6 +49,10 @@ else()
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    afterprocessslot.h
+    ui_mainwindow.h
+    imgprocess.h
+    imgprocess.cpp
   )
 endif()
 

@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "afterprocessslot.h"
+#include "imgprocess.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,9 +16,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+// signals:
+//    void finish(const QString & msg);//自定义信号
 
 private slots:
     void on_pushButton_clicked();
+private:
+    AfterProcessSlot afterProcessSlot;
+    ImgProcessCore processcore;
 
 private:
     Ui::MainWindow *ui;
