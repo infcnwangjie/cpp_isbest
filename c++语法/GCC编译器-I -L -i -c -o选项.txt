@@ -45,3 +45,37 @@ sum is 3
 常来讲， gcc默认会在程序当前目录、/lib、/usr/lib和/usr/local/lib下找对应的库。 -L的意思很明确了， 就不在赘述了。
  三. 最后说说-l （注意是小写的L）
  我们之前讨论过Linux中的静态库和动态库， -l的作用就是用来指定具体的静态库、动态库是哪个。
+
+
+
+
+
+
+
+总结 #1 "/usr/lib/gcc/i686-pc-cygwin/4.5.3/include/c++/bits/stringfwd.h"1 3
+
+可以参考官方预处理输出文档：
+
+http://gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html
+
+或者：
+
+http://stackoverflow.com/questions/15679756/g-e-option-output
+
+
+
+（1）编译到汇编
+
+$g++ -s main.i -o main.s
+
+（2）g++ -c 编译、汇编到目标代码，不进行链接,即生成目标文件（.o）
+
+Administrator@72cec870236147e/home/liujl/mytest
+
+$g++ -c main.s -o main.o
+
+（3）会生成一个main.o的目标文件
+
+g++ -o 生成链接文件
+
+注意（2）（3）都有-o，但是不一样的，（2）中跟在-c后面的-o是为了给编译文件命名，而（3）中-o 是生成链接文件并命名。
