@@ -7,7 +7,8 @@ using namespace std;
 volatile int val;
 mutex mut;
  
-void icrement () {
+void icrement (int a) {
+	cout<<"传参"<<a<<endl;
 	for (int i = 0; i < 100000000; i++) {
 		mut.lock ();
 		cout<<"num is "<<val++<<endl;
@@ -18,8 +19,8 @@ void icrement () {
  
 int main (int argc, char* argv []) {
 	//创建两个线程
-	thread t1 (icrement);
-	thread t2 (icrement);
+	thread t1 (icrement,4);
+	thread t2 (icrement,5);
 	//等待两个线程执行完
 	t1.join ();
 	t2.join ();
