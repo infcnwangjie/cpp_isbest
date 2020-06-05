@@ -18,14 +18,15 @@ int main(){
     connect(s_server, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
 
 	char send_buf[]="i love china";
-
-
-	int send_len = send(s_server, send_buf, 100, 0);
-
+	
 	const int BUFFERSIZE=100;
+
+	int send_len = write(s_server, send_buf, BUFFERSIZE)//send(s_server, send_buf, BUFFERSIZE, 0);
+
+	
     //读取服务器传回的数据
     char buffer[BUFFERSIZE]={0};
-    read(s_server, buffer, BUFFERSIZE);
+    read(s_server, buffer, BUFFERSIZE);// recv(s_server, buffer, BUFFERSIZE, 0);
 
     cout<<"Message form server:"<< buffer<<endl;
 
