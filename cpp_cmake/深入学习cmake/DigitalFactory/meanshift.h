@@ -6,35 +6,29 @@
 #include <string>
 typedef unsigned int uint;
 
-struct Point{
-    int x;
-    int y;
-    int frequency=0;
-};
 
 
-struct Cluster
+struct DigtalCluster
 {
     std::vector<double> centroid;
     std::vector<uint> samples;
 };
 
+
+
 class Meanshift{
 public:
-    Meanshift(std::vector<Point> datas):points(datas){}
     Meanshift(){}
     ~Meanshift(){}
 
     //计算聚集点
-    std::vector<Cluster> k_means(std::vector<std::vector<double> > trainX, uint k, uint maxepoches);
+    std::vector<DigtalCluster> k_means_ForDigitals(std::vector<std::vector<double> > trainX, uint k, uint maxepoches);
+
 
 private:
-    std::vector<Point> points;
-    //修改集群数据
-    void modifyClusterDatas();
-    Point  computeCenterPoint(std::vector<Point> points
-                              );
+    //计算俩数值之间的距离
     double cal_distance(std::vector<double> a, std::vector<double> b);
+
 };
 
 

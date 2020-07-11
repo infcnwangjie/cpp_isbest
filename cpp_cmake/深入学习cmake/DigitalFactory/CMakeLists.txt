@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(creative_erp LANGUAGES CXX)
+project(DigitalFactory LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -32,27 +32,27 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 qt5_add_resources(QRC_FILES ${RCC_FILES})
 
 if(ANDROID)
-  add_library(creative_erp SHARED
+  add_library(DigitalFactory SHARED
     main.cpp
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
   )
 else()
-  add_executable(creative_erp
-    main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    loginwidget.h
-    loginwidget.cpp
-    meanshift.h
-    meanshift.cpp
-    login.ui
-    mainwindow.ui
+  add_executable(DigitalFactory
+      main.cpp
+        mainwindow.cpp
+        mainwindow.h
+        loginwidget.h
+        loginwidget.cpp
+        meanshift.h
+        meanshift.cpp
+        login.ui
+        mainwindow.ui
 
-    ui_login.h
-       ${QRC_FILES}
+        ui_login.h
+           ${QRC_FILES}
   )
 endif()
 
-target_link_libraries(creative_erp PRIVATE Qt5::Widgets)
+target_link_libraries(DigitalFactory PRIVATE Qt5::Widgets)

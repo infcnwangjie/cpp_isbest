@@ -22,12 +22,12 @@ double Meanshift::cal_distance(vector<double> a, vector<double> b)
     }
     return pow(val, 0.5);
 }
-vector<Cluster> Meanshift::k_means(vector<vector<double> > trainX, uint k, uint maxepoches)
+vector<DigtalCluster> Meanshift::k_means_ForDigitals(vector<vector<double> > trainX, uint k, uint maxepoches)
 {
     const uint row_num = trainX.size();
     const uint col_num = trainX[0].size();
     /*初始化聚类中心*/
-    vector<Cluster> clusters(k);
+    vector<DigtalCluster> clusters(k);
     uint seed = (uint)time(NULL);
     for (uint i = 0; i < k; i++)
     {
