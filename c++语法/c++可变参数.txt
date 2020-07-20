@@ -1,0 +1,12 @@
+#include <stdarg.h>
+void test_valist_int(int nParaCount, ...) {   
+ va_list va;    
+va_start(va, nParaCount);  
+  for (int i = 0; i < nParaCount; ++i) {         
+// int是传入参数的类型，注意这里只能用基础数据类型，不能使用string等对象      
+  cout << va_arg(va, int) << endl;  
+  }    
+va_end(va);
+}
+
+test_valist_int(5, 1, 2, 3, 4, 5);
