@@ -290,7 +290,7 @@ int category_code(unsigned char * test_img_data,int img_h,int img_w){
 
     auto svm= SvmUtil();
 
-    svm.train("C:/NTY_IMG_PROCESS/TRAIN/POS/","imgs.txt","C:/NTY_IMG_PROCESS/TRAIN/NEG/","imgs.txt");
+    svm.train("D:/NTY_IMG_PROCESS/TRAIN/POS/","imgs.txt","D:/NTY_IMG_PROCESS/TRAIN/NEG/","imgs.txt");
      cv::Mat image(img_h, img_w, CV_8UC3, test_img_data);
     int result=svm.predict(image);
     return result;

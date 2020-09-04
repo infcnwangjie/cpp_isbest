@@ -11,9 +11,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 
-set(OpenCV_DIR "C:/OpenCV-MinGW-Build-OpenCV-3.4.6")
-set(OpenCV_INCLUDE_DIRS  "C:/OpenCV-MinGW-Build-OpenCV-3.4.6/include" "C:/OpenCV-MinGW-Build-OpenCV-3.4.6/include/opencv2/opencv2")
-set(OpenCV_LIBS "C:/OpenCV-MinGW-Build-OpenCV-3.4.6/x86/mingw/bin")
+set(OpenCV_DIR "D:/vs_nty/OpenCV-MinGW-Build-OpenCV-4.1.0_x86")
+set(OpenCV_INCLUDE_DIRS  "D:/vs_nty/OpenCV-MinGW-Build-OpenCV-4.1.0_x86/include" "D:/vs_nty/OpenCV-MinGW-Build-OpenCV-4.1.0_x86/include/opencv2/opencv2")
+set(OpenCV_LIBS "D:/vs_nty/OpenCV-MinGW-Build-OpenCV-4.1.0_x86/x86/mingw/bin")
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 find_package( OpenCV REQUIRED )
