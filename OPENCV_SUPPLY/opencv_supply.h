@@ -36,5 +36,7 @@ extern "C"   OPENCV_SUPPLY_EXPORT   double same_rate(unsigned char * img1_data,u
 
 extern "C"   OPENCV_SUPPLY_EXPORT uchar* cpp_canny(int height, int width, uchar* data) ;
 
+extern "C"   OPENCV_SUPPLY_EXPORT int category_code(unsigned char * test_img_data,int img_h,int img_w);
+
 
 #endif // OPENCV_SUPPLY_H
