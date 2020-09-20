@@ -1,0 +1,79 @@
+（1）gcc -o test.exe test.c add.c add.h    可以
+
+
+（2）gcc -o test.exe test.c add.c  可以
+
+
+（3）makefile方式，新建一个文件输入如下内容，注意tab格式：
+
+cc = gcc
+prom=test
+obj=add.o test.o
+$(prom): $(obj)
+	$(cc) -o $(prom)  $(obj)
+test.o: test.c add.h
+	$(cc)  -c test.c -o test.o
+add.o: add.h add.c
+	$(cc)  -c add.c -o add.o
+clean:
+	rm -f *.o
+然后另存为所有文件，最后make 就可以编译为可执行程序了
+
+
+（4）然后考虑到每个模块下都会引用很多头文件，头文件需不需要加入到依赖项，比如test.c引用了add.h，如果依赖项中不加入add.h，
+仅仅依赖# include “add.h”是否可行：
+
+cc = gcc
+prom=test
+obj=add.o test.o
+$(prom): $(obj)
+	$(cc) -o $(prom)  $(obj)
+test.o: test.c 
+	$(cc)  -c test.c -o test.o
+add.o: add.h add.c
+	$(cc)  -c add.c -o add.o
+clean:
+	rm -f *.o
+
+可行，正常编译，说明add.h中声明的方法通过include引入到test.o中起到一个函数声明的作用，它修改不修改不应该导致test.o的重新编译，
+而是应导致add.o的编译。也就是说编译时针对没一个单元来说的。正常的include起到声明的作用即可，在链接的时候就能找到每个函数或者对象。
+	
+（5）更彻底一点：
+cc = gcc
+prom=test
+obj=add.o test.o
+$(prom): $(obj)
+	$(cc) -o $(prom)  $(obj)
+test.o: test.c 
+	$(cc)  -c test.c -o test.o
+add.o: add.h add.c
+	$(cc)  -c add.c -o add.o
+clean:
+	rm -f *.o
+	
+经过验证上述都可以，因此经过试验证明，不需要在依赖文件中加入头文件，但是加入头文件可以在它修改的时候，会重新编译模块，这是
+在依赖文件中加入头文件的意义。不过，在编译命令中，不需要头文件。
+（6）再次证明头文件在依赖项中，如果头文件修改带来的影响，比较4、5结果。在add.h 和add.c中加入了声明以及实现
+int compare(int a,int b);
+int compare(int a,int b){
+if(a>b)return a;
+else{
+return b;
+}
+}
+make一下看看，显示如下：
+gcc -c add.c  -o add.o
+gcc -o test  add.o test.o
+可以发现，没有重新编译test.o而是仅仅编译add.o 并且重新生成test.exe.证明我的猜测没有错误。这样认为，makefile不会重复编译，除非依赖项有所变化。
+（7）虽然理清楚了，但是感觉写的啰嗦，特别是以后模块非常多的时候，重复的东西有点多。
+cc = gcc
+prom=test
+obj=add.o test.o
+$(prom): $(obj)
+	$(cc) -o $(prom)  $(obj)
+%.o :%.c %.h
+	$(cc) -c $< -o $@
+clean:
+	rm -f *.o
+
+完美解决问题，完美运行，%.o 是一种模式匹配用法，匹配所有的XX.o文件，%.c %.h同理。
