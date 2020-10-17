@@ -1,0 +1,66 @@
+使用Concepts
+通过使用concepts，传统的模板元编程方面关于编译错误的痛点可以得到极大改善，编译器可以给出更加符合人类直觉的错误提示。 比如标准库中的std::find算法的声明如下：
+
+template< class InputIt, class T >
+InputIt find( InputIt first, InputIt last, const T& value );
+这里的两个模板参数其实有更多额外的要求用传统的语法是没法表达的，第一个类型参数Input我们期望它是一个可遍历的迭代器类型，并且其中的元素类型需要和T类型匹配，并且该类型能够用来做相等比较。 这些约束条件在现有的语言标准中都是隐性的，一旦用错，编译器就会拿海量的错误信息来招呼你，因为编译器背后会使用SFINAE这样的语言特性来比较各种重载并给出一个常常的candidate列表，然后告诉你任何一个尝试都没有成功，所以失败了。
+
+Concepts相当于将这些要求用一种显而易见的方式给出来，比如我们想表述一个在序列容器上查找的类似算法，可以用concepts来描述为
+
+template <typename S, typename T>
+requires Sequence<S> && Equality_comparable<Value_type<S>, T>
+Iterator_of<S> find(S& seq, const T& value);
+ 
+//using alias
+template<typename X> using Value_type<X> = X::value_type;
+template<typename X> using Iterator_of<X> = X::iterator;
+这时候如果使用不满足条件的输入参数，编译器会直观地告诉我们错误的具体原因
+
+vector<string> vs;
+list<double> list;
+auto p0 = find(vs, "waldo"); //okay
+auto p1 = find(vs, 0.11); //error! - can't compare string and double
+auto p2 = find(list, 0.5); //okay
+auto p3 = find(list, "waldo"); //error! - can't compare double and string
+显然这里的例子有点啰嗦，出于节约键盘敲击次数的考虑（Java太啰嗦了？原来的模板元函数的写法也已经够啰嗦的了！），可以进一步简化这个写法，将简单的concepts约束直接嵌入到声明的地方：
+
+template <Sequence S, typename T> 
+    requires Equality_comparable<Value_type<S>, T>
+Iterator_of<S> find(S& seq, const T& value);
+自定义concepts
+对于上面的简单的concepts，标准库已经提供了一个开箱可用的封装，不过出于学习目的自己动手做一个轮子也很简单。比如用上面的比较为例，可以写作
+
+template <typename T>
+concept bool Equality_comparable = requires(T a, T b) {
+    { a == b} => bool; //compar with ==, and should return a bool
+    { a != b} => bool; //compare with !=, and should return a bool
+}
+语法上和定义一个模板元函数很想象，所不同的地方是
+
+这里我们定义的对象是一个关于类型的检查约束
+这里的requires部分引申出具体的检查约束，必须同时实现操作符相等和不相等，两个操作符都需要返回bool类型
+整个concept本身可以用在逻辑表达式中
+简化concept的格式负担
+如果能将简单的事情变得更简单，为什么不更进一步呢？这个设计哲学是C++的核心设计思想之一（参见Bjarne的D&E CPP），考虑下面的例子
+
+template <typename Seq>
+    requires Sortable<Seq>
+void sort(Seq& seq);
+这里的Sortable表示某个可以被排序的容器类型；因为concept也是用于限制类型，而函数的参数也是用来限定类型，一个自然的想法就是逐步简化它
+
+//应用上述的简化方式，concept描述放在模板参数声明中
+template <Sortable Seq>
+void sort(Seq& seq);
+进一步地，去掉template部分的声明会更加简单，就像是一个普通的函数声明，只不过参数类型是一个编译器可以检查的泛型类型
+
+void sort(Sortable& s);
+这样一来，就和其它语言中的接口很类似了，没错就和Java的JDK中的泛型接口很相似了；只是底层的实现技术是完全不一样的，Java由于根深蒂固的OO设计而不得不借助于类型擦除术；当然这个扯的稍微远了一点。
+
+auto类型的参数
+其实C++14里面已经允许了auto作为函数参数的类型这一用法，显然它和concept的简化写法完全不矛盾。
+
+void func(auto x); // x实际上可以是任意类型!
+void func1(auto x, auto y); //x和y可以是任意的类型，可以不相同
+在多个参数的情况下， 如果我们想限定两个参数的类型必须总是一样，有一种很简单的机巧做到
+
+constexpr concept bool Any = true; //任何类型都是Any
