@@ -1,28 +1,113 @@
-
-#include <iostream>
-#include <thread>
-#include <mutex>
-using namespace std;
+一：这是没有使用lock_guard 和uniq_lock的demo:
+	#include <iostream>
+	#include <thread>
+	#include <mutex>
+	using namespace std;
  
-volatile int val;
-mutex mut;
+	volatile int val;
+	mutex mut;
  
-void icrement () {
-	for (int i = 0; i < 100000000; i++) {
-		mut.lock ();
-		val++;
-		mut.unlock ();
+	void icrement () {
+		for (int i = 0; i < 100000000; i++) {
+			mut.lock ();
+			val++;
+			mut.unlock ();
+		}
 	}
-}
  
-int main (int argc, char* argv []) {
-	//创建两个线程
-	thread t1 (icrement);
-	thread t2 (icrement);
-	//等待两个线程执行完
-	t1.join ();
-	t2.join ();
-	cout << val << endl;
-	return 0;
+	int main (int argc, char* argv []) {
+		//创建两个线程
+		thread t1 (icrement);
+		thread t2 (icrement);
+		//等待两个线程执行完
+		t1.join ();
+		t2.join ();
+		cout << val << endl;
+		return 0;
 
-}
+	}
+	
+二：采用lock_guard的demo:
+	lock_guard可以简化lock/unlock的写法，同时也更安全，因为lock_guard在构造时会自动锁定互斥量，而在退出作用域后进行析构会自动解锁，从而保证了互斥量的正确操作，避免忘记unlock操作，因此，应尽量用lock_guard。lock_guard用到了RAII技术，这种技术在类的构造函数中分配资源，
+	在析构函数中释放资源，保证了资源在出了作用域之后就释放。
+	
+	#include <iostream>
+	#include <string>
+	#include <condition_variable>
+	#include <mutex>
+
+
+
+	void IncreaseWithLockGuard(int *value,std::mutex *m3x){
+		for (int i = 0; i < 10000; ++i) {
+			std::lock_guard<std::mutex> lock(*m3x);
+			*value+=1;
+		}
+	}
+
+	void IncreaseWIthLockUnlock(int *value,std::mutex *m3x){
+		for (int i = 0; i < 10000; ++i) {
+			m3x->lock();
+			*value+=1;
+			m3x->unlock();
+		}
+	}
+
+	int main(int argc, char *argv[]) {
+		mutex m3x;
+		int value = 0;
+		thread th0(IncreaseWithLockGuard,&value,&m3x);
+		thread th1(IncreaseWithLockGuard,&value,&m3x);
+		th0.join();
+		th1.join();
+		cout << "value:" << value << endl;
+		return 0;
+	}
+	
+三：采用unique_lock的demo:
+     unique_lock中的unique表示独占所有权,unique_lock独占的是mutex对象，就是对mutex锁的独占。
+	 #include <iostream>
+	#include<thread>
+	#include<unistd.h>
+	#include<mutex>
+	using namespace std;
+	std::mutex mymutex;
+	void sayHello()
+	{
+		int k=0;
+		unique_lock<mutex> lock(mymutex);
+		while(k<2)
+		{
+			k++;
+			cout<<endl<<"hello"<<endl;
+			sleep(2);
+		}
+		    //lock() 加锁
+            //unlock() 释放锁
+            //try_lock() 尝试加锁，如果成功则返回true，否则false
+            //release() 返回它所管理的mutex对象指针，释放所有权，也就是 说这个unique_lock和mutex没有关系  mutex *Pmutex = sbguard.release()
+            //锁住的代码的多少称为粒度
+	}
+	void sayWorld()
+	{
+		unique_lock<mutex> lock(mymutex);
+		while(1)
+		{
+			 cout<<endl<<"world"<<endl;
+			 sleep(1);
+		}
+	}
+	int main()
+	{
+	   thread threadHello(&sayHello);
+	   thread threadWorld(&sayWorld);
+	   threadHello.join();
+	   threadWorld.join();
+	   return 0;
+	}
+	程序运行步骤是这样的：
+	首先同事运行threadHello线程和threadWorld线程
+	先进入threadHello线程的sayHello()函数，这个时候加了mymutex锁，另外一个threadWorld线程进入后发现mymutex锁没有释放，只能等待。
+	当过去两个循环（每个循环2秒后）threadHello线程结束，unique_lock lock(mymutex)的生命周期结束，mymutex锁释放，执行threadWorld线程，
+	此时开始一直say world。
+	
