@@ -38,6 +38,11 @@ set(POSTGRESQL_DIR "C:/myinstalled/PostGresql")
 include_directories(${POSTGRESQL_DIR}/include)
 link_directories(${POSTGRESQL_DIR}/lib)
 
+#引用mysql库
+set(MYSQL_DIR "C:/work/mysql-5.7.27-winx64")
+include_directories(${MYSQL_DIR}/include)
+link_directories(${MYSQL_DIR}/lib)
+
 
 set(DIGITAL_FACTORY_PROJECT_DIR "C:/work/cpp/DigitalFactory")
 
@@ -98,5 +103,5 @@ else()
 endif()
 
 target_link_libraries(DigitalFactory PRIVATE Qt5::Widgets Qt5::Sql )
-target_link_libraries(DigitalFactory PRIVATE  ${POSTGRESQL_DIR}/lib/libpq.lib)
-#target_link_libraries(DigitalFactory PRIVATE  ${MYSQL_DIR}/lib/libmysql.lib)
+#target_link_libraries(DigitalFactory PRIVATE  ${POSTGRESQL_DIR}/lib/libpq.lib)
+target_link_libraries(DigitalFactory PRIVATE  ${MYSQL_DIR}/lib/libmysql.lib)
