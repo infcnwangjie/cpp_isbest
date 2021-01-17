@@ -8,7 +8,6 @@
 #include "postsqlsdk.h"
 #include "mysql.h"
 
-//#define DEBUG 1
 using namespace  std;
 
 
@@ -18,7 +17,7 @@ int main(int argc, char *argv[])
 
 
     //   测试用例编写
-#ifdef DEBUG
+    #ifdef DEBUG
 //    PostgreSqlSdk p;
 //    p.test_sql();
 //    cout<<"执行debug"<<endl;

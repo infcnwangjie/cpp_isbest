@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "mainwindow_ui.h"
+#include "mainwindowui.h"
 //#include "login_form_ui.h"
 #include <QBitmap>
 #include <QPainter>
@@ -9,7 +10,7 @@ using namespace Ui;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new MainWindowUi)
+    , ui(new MainWindowNewUi)
 {
 
         this->setWindowTitle("闪亮");

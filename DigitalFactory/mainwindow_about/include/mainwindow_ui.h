@@ -8,6 +8,10 @@
 ** Created by: Qt User Interface Compiler version 5.14.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
+**
+**
+**
+** 暂时不用了，被mainwindowui.h代替
 ********************************************************************************/
 
 
@@ -42,7 +46,9 @@ public:
     QVBoxLayout *leftLayout;
     QVBoxLayout *rightLayout;
 
-    QPushButton * navigationButton;
+    QPushButton * topNavigationButton;
+    QLabel *topLogo;
+
     QLabel *left;
     QLabel * right;
 
@@ -50,13 +56,26 @@ public:
 
     void addTop(){
         this->topLayout=new QHBoxLayout();
-//         QPushButton(const QIcon& icon, const QString &text, QWidget *parent = nullptr);
-        navigationButton=new QPushButton(QIcon(":/resource/images/xiaoren.png"),"菜单导航");
-        this->topLayout->addWidget(navigationButton);
+        //         QPushButton(const QIcon& icon, const QString &text, QWidget *parent = nullptr);
 
-        //        QSplitter spliter1(this->centralwidget);
-        //        this->topLayout->addWidget(spliter1);
+        //this->topLayout->addWidget(navigationButton);
 
+        QSplitter *spliter1=new QSplitter(this->centralwidget);
+        spliter1->setFixedSize(30,30);
+
+
+        left=new QLabel();
+        left->setText("logo");
+        left->setMaximumSize(200,50);
+
+        spliter1->addWidget(left);
+
+        topNavigationButton=new QPushButton(QIcon(":/resource/images/xiaoren.png"),"菜单导航");
+        topNavigationButton->setMaximumSize(100,50);
+
+        spliter1->addWidget(topNavigationButton);
+
+        this->topLayout->addWidget(spliter1);
         this->centralwidgetLayout->addLayout(this->topLayout);
     }
 
@@ -70,7 +89,7 @@ public:
     }
     void addRight(){
         this->rightLayout=new QVBoxLayout();
-         right=new QLabel();
+        right=new QLabel();
         right->setText("right");
         this->rightLayout->addWidget(right);
 
@@ -108,8 +127,8 @@ public:
 
 
         //用来展示当前打开的窗口
-                addTop();
-                addMiddle();
+        addTop();
+        addMiddle();
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         MainWindow->setMenuBar(menubar);
@@ -122,15 +141,15 @@ public:
 
 
 
-//        retranslateUi(MainWindow);
+        //        retranslateUi(MainWindow);
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
-//    void retranslateUi(QMainWindow *MainWindow)
-//    {
-//        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-//    } // retranslateUi
+    //    void retranslateUi(QMainWindow *MainWindow)
+    //    {
+    //        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+    //    } // retranslateUi
 
 };
 

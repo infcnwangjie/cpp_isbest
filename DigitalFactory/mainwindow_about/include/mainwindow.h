@@ -8,7 +8,8 @@
 //#include "loginform.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindowUi; }
+namespace Ui { class MainWindowUi;
+             class MainWindowNewUi;}
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -26,7 +27,7 @@ public:
     void paintEvent(QPaintEvent *event);
 
 private:
-    Ui::MainWindowUi *ui;
+    Ui::MainWindowNewUi *ui;
 //    QVBoxLayout *loginLayout;
 //    QMdiArea * mdiArea;
 //    QMdiSubWindow *loginFormMdiSubWindow;

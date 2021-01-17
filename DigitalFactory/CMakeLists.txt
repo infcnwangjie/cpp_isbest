@@ -87,8 +87,8 @@ else()
         ${MAINWINDOW_HEADERS}
         ${MAINWINDOW_CPPS}
 #        loginwindow.h
-        meanshift.h
-        meanshift.cpp
+#        meanshift.h
+#        meanshift.cpp
         postsqlsdk.h
         postsqlsdk.cpp
 #        loginwindow.ui
