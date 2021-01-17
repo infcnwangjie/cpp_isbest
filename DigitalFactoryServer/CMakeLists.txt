@@ -11,6 +11,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#SET(QT_USE_QTNETWORK true)
+
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check http://doc.qt.io/qt-5/deployment-android.html for more information.
 # They need to be set before the find_package(Qt5 ...) call.
@@ -25,7 +27,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #endif()
 
 
-find_package(Qt5 COMPONENTS Widgets Sql network REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Sql   REQUIRED) #QtNetwork
 
 set(RCC_FILES resource.qrc)
 file(GLOB_RECURSE RCC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.qrc)#CMAKE_CURRENT_SOURCE_DIR  这是当前处理的CMakeLists.txt所在的目录
@@ -80,6 +82,7 @@ else()
   )
 endif()
 
+#message(${QT_QTNETWORK_LIBRARY})
 
-target_link_libraries(DigitalFactoryServer PRIVATE Qt5::Widgets Qt5::Sql Qt5::Network )
+target_link_libraries(DigitalFactoryServer PRIVATE Qt5::Widgets Qt5::Sql  ) #${QT_QTNETWORK_LIBRARY}
 target_link_libraries(DigitalFactoryServer PRIVATE  ${MYSQL_DIR}/lib/libmysql.lib)
