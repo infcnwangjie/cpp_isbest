@@ -1,0 +1,72 @@
+cmake_minimum_required(VERSION 3.10.2)
+project(MinimalPathExtractionExamples)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/bin)
+
+
+find_package(OpenCV REQUIRED)
+include_directories(  ${OpenCV_INCLUDE_DIRS} )
+find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets Sql Test Xml )
+find_package(Qt5LinguistTools)
+find_package(Qt5Network)
+find_package(ITK REQUIRED
+    COMPONENTS MinimalPathExtraction
+    ITKIOImageBase
+    ITKImageFunction
+    ITKOptimizers
+    ITKPath
+    ITKIOMeta
+    ITKIOPNG
+    ITKIOJPEG
+    )
+
+include(${ITK_USE_FILE})
+option(BUILD_SHARED_LIBS "" OFF)
+
+set(Resources
+    Resources/qss.qrc
+    Resources/app.h
+    Resources/app.cpp
+    Resources/stable.h
+    Resources/main.qrc
+    Resources/qt_opencv.h
+    Resources/qt_opencv.cpp）
+set(farm
+    farm/mainwindow.h
+    farm/ mainwindow.cpp
+    farm/ mainwindow.ui）
+
+
+
+add_executable(
+    ${PROJECT_NAME}
+   ${Business}
+   ${farm}
+    main.cpp  
+    )
+
+target_link_libraries(
+    ${PROJECT_NAME}
+    ${ITK_LIBRARIES}
+    )
+target_link_libraries(
+    ${PROJECT_NAME}
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+    Qt5::Sql
+    Qt5::Xml
+    Qt5::Network)
+target_link_libraries(
+    ${PROJECT_NAME}
+    ${OpenCV_LIBS}
+    "opencv_core"
+    "opencv_highgui"
+    "opencv_imgcodecs"
+    "opencv_imgproc"
+    "dl")
