@@ -32,6 +32,10 @@ LoginWindow::LoginWindow(QWidget *parent)
     QObject::connect(this->loginDialog->ui->loginButton, &QPushButton::clicked,this->loginDialog, &LoginForm::onlogin);
 
 
+    m_pTcpSocket=new QTcpSocket(nullptr);
+    this->m_pTcpSocket->connectToHost(QHostAddress::LocalHost,6666,QTcpSocket::ReadWrite);
+    connect(this->m_pTcpSocket,SIGNAL(connected()),this,SLOT(connected()));
+
 }
 
 void LoginWindow::paintEvent(QPaintEvent *event){

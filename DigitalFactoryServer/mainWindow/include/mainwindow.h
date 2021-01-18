@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <BehindServerThread.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,7 +16,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void click_button(){
+        this->behindThread->start();
+    }
 private:
+    BehindServerThread * behindThread;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

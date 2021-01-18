@@ -28,6 +28,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 find_package(Qt5 COMPONENTS Widgets Sql   REQUIRED) #QtNetwork
+find_package(Qt5Network)
 
 set(RCC_FILES resource.qrc)
 file(GLOB_RECURSE RCC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.qrc)#CMAKE_CURRENT_SOURCE_DIR  这是当前处理的CMakeLists.txt所在的目录
@@ -63,11 +64,12 @@ link_directories(${MYSQL_DIR}/lib)
 
 
 
+
 if(ANDROID)
   add_library(DigitalFactoryServer SHARED
+      mainwindow.cpp
+      mainwindow.h
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
     mainwindow.ui
   )
 else()
@@ -84,5 +86,5 @@ endif()
 
 #message(${QT_QTNETWORK_LIBRARY})
 
-target_link_libraries(DigitalFactoryServer PRIVATE Qt5::Widgets Qt5::Sql  ) #${QT_QTNETWORK_LIBRARY}
+target_link_libraries(DigitalFactoryServer PRIVATE Qt5::Widgets Qt5::Sql Qt5::Network  ) #${QT_QTNETWORK_LIBRARY}
 target_link_libraries(DigitalFactoryServer PRIVATE  ${MYSQL_DIR}/lib/libmysql.lib)
