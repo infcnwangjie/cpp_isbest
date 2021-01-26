@@ -1,0 +1,5 @@
+databaseip:127.0.0.1
+databaseport:3306
+databasename:jxc
+databaseuser:root
+databasepassword:root
