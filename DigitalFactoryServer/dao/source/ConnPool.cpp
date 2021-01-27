@@ -132,28 +132,28 @@ MYSQL ConnPool:: getConnect(){
     int port =0;
     porttemp>>port; // 数据库名称（已存在）
 
-    MYSQL conn;
-    if(connList.size()>0){
-        conn=connList.front();
 
-        if (mysql_real_connect(&conn, host, user, pass, db, port, 0, 0)){
+    if(connList.size()>0){
+        mysqlconn=connList.front();
+
+        if (mysql_real_connect(&mysqlconn, host, user, pass, db, port, 0, 0)){
             connList.pop_front();
         }else{
-            conn=getConnect();
+            mysqlconn=createOneConnect();connList.push_back(mysqlconn);
         }
 
 
     }else{
         initConns();
 
-        conn=connList.front();
+        mysqlconn=connList.front();
         connList.pop_front();
-        return conn;
+        return mysqlconn;
     }
     uniqlock.unlock();
 
 
-    return  conn;
+    return  mysqlconn;
 
 }
 

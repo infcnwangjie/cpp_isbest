@@ -42,7 +42,7 @@ public:
 protected:
     std::map<std::string,std::string> dbMap;
     list<MYSQL> connList;
-    //    MYSQL mysqlconn;
+    MYSQL mysqlconn;
     bool successConn=false;
     static  ConnPool * instance;
 
