@@ -1,12 +1,12 @@
 #ifndef LOGINDAO_H
 #define LOGINDAO_H
-#include "ConnPool.h"
+#include "BaseDao.h"
 #include <map>
 #include<list>
 
 using namespace std;
 
-class  UserDao{
+class  UserDao:protected BaseDao{
 
 public:
     UserDao(){
@@ -18,7 +18,7 @@ public:
 
 
 public:
-    MYSQL fetchConn();
+
     bool login(string userName,string passWord,string registcode);
     bool addUser(string name,string email,int role_id,int depart_id,string remark,string password="123456");
     bool deleteUser(string name,string password);
@@ -28,8 +28,6 @@ public:
     list<map<string,string>> selectUsers(string name="",string email="",int role_id=0,int depart_id=0,string password="",
                                          int pageSize=3,int currentPage=2);
 
-private:
-    ConnPool  * connectPool;
 
 
 };

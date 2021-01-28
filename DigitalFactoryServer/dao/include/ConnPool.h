@@ -1,7 +1,5 @@
-#ifndef BASEDAO_H
-#define BASEDAO_H
-
-
+#ifndef CONNECTPOOL_H
+#define CONNECTPOOL_H
 
 #include "mysql.h"
 #include <iostream>
@@ -48,4 +46,4 @@ protected:
 
     mutex lock;
 };
-#endif // BASEDAO_H
+#endif // CONNECTPOOL_H

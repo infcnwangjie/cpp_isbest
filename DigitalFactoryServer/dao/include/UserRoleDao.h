@@ -1,8 +1,8 @@
 #ifndef USERROLEDAO_H
 #define USERROLEDAO_H
-#include "ConnPool.h"
+#include "BaseDao.h"
 
-class UserRoleDao{
+class UserRoleDao:protected BaseDao{
 
 public:
     UserRoleDao(){
@@ -14,7 +14,7 @@ public:
 
 
 public:
-    MYSQL fetchConn();
+
     bool addRole(string name,string remark);
     bool deleteRole(string name);
     bool deleteRoleById(int id);
@@ -22,9 +22,6 @@ public:
     map<string,string> getRoleById(int id);
     list<map<string,string>> selectRoles(string name="",string remarks="",
                                          int pageSize=3,int currentPage=2);
-
-private:
-    ConnPool  * connectPool;
 
 };
 

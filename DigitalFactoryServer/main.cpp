@@ -13,6 +13,7 @@ using namespace  std;
 #ifdef DEBUG
 #include "UserDao.h"
 #include "UserRoleDao.h"
+#include "DeptDao.h"
 #endif
 
 void testmysql(){
@@ -99,14 +100,24 @@ void testRole(){
     }
 }
 
+void testDept(){
+    DeptDao a;
+    a.addDept("测试","通过会删除");
+    for(map<string,string> record:a.selectDepts()){
+        cout<<record["name"]<<endl;
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
 
 
 #ifdef DEBUG
     //testmysql();
-//    testLogin();
-    testRole();
+    testLogin();
+//    testRole();
+//    testDept();
 #endif
 
 

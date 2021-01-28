@@ -1,8 +1,8 @@
 #ifndef USERROLEMENUDAO_H
 #define USERROLEMENUDAO_H
-#include "ConnPool.h"
+#include "BaseDao.h"
 
-class RoleMenuDao{
+class RoleMenuDao:protected BaseDao{
 
 public:
     RoleMenuDao(){
@@ -14,7 +14,7 @@ public:
 
 
 public:
-    MYSQL fetchConn();
+
     bool addRoleMenu(int menuid ,int roleid);
     bool deleteRoleMenu(int  roleId);
     bool deleteRoleMenuById(int roleId,int menuId);
@@ -23,8 +23,6 @@ public:
     list<map<string,string>> selectRoleMenus(int roleId=0,int menuId=0,
                                          int pageSize=3,int currentPage=2);
 
-private:
-    ConnPool  * connectPool;
 
 };
 
