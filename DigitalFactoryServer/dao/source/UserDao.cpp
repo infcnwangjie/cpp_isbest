@@ -1,7 +1,7 @@
-#include "LoginDao.h"
+#include "UserDao.h"
 
 
-MYSQL LoginDao::fetchConn(){
+MYSQL UserDao::fetchConn(){
     connectPool=this->connectPool->getInstance();
 
     MYSQL conn=connectPool->getConnect();
@@ -9,7 +9,7 @@ MYSQL LoginDao::fetchConn(){
 }
 
 
-bool LoginDao::login(string user,string password,string registcode){
+bool UserDao::login(string user,string password,string registcode){
 
 
 
@@ -31,34 +31,49 @@ bool LoginDao::login(string user,string password,string registcode){
 
         result = mysql_store_result(&conn); //获得sql语句结束后返回的结果集
         unsigned int rows = (unsigned int)mysql_num_rows(result);
-        cout << "总记录条数： " << rows << endl;
-        unsigned int fields = mysql_num_fields(result);
-        cout << "每条记录总共 " << fields << " 个字段" << endl;
+        //        cout << "总记录条数： " << rows << endl;
+        const unsigned int fields = mysql_num_fields(result);
+        //        cout << "每条记录总共 " << fields << " 个字段" << endl;
         MYSQL_FIELD *field = nullptr;
+        string fieldNames[fields];
         for (unsigned int i = 0; i < fields; i++)
         {
             field = mysql_fetch_field_direct(result, i);
-            cout << field->name << "\t\t";
+            fieldNames[i]=field->name ;
+            //            cout << field->name << "\t\t";
         }
-        cout << endl;
         MYSQL_ROW row = nullptr;
         row = mysql_fetch_row(result);
+        bool matchName=false,matchPasswd=false;
         while (nullptr != row)
         {
+
             for (unsigned int i = 0; i < fields; ++i)
             {
-                if (row[i] != nullptr)
-                    cout << row[i] << "\t\t";
-                else
-                    cout << "null" << "\t\t";
+                if(fieldNames[i]=="name" && row[i]==user){
+                    matchName=true;
+                }
+
+                if(fieldNames[i]=="password" && row[i]==password){
+                    matchPasswd=true;
+                }
+                if(matchName==true &&matchPasswd==true){
+                    break;
+                }
             }
             cout << endl;
             row = mysql_fetch_row(result);
         }
+
+
         mysql_free_result(result);
         //         mysql_close(&conn);
-        cout<<"find user"<<endl;
-        return true;
+        if(matchName &&matchPasswd)
+            cout<<"find user"<<endl;
+        else
+             cout<<"not find user"<<endl;
+
+        return matchName &&matchPasswd;
     }
     else
     {
@@ -74,7 +89,7 @@ bool LoginDao::login(string user,string password,string registcode){
 }
 
 
-bool LoginDao::addUser(string name,string email,int role_id,int depart_id,string remark,string password){
+bool UserDao::addUser(string name,string email,int role_id,int depart_id,string remark,string password){
 
 
 
@@ -87,7 +102,7 @@ bool LoginDao::addUser(string name,string email,int role_id,int depart_id,string
     string sql=sqlBuilder.str();
 
     cout<<sql<<endl;
-
+mysql_query(&conn, "set names utf8");
     if(mysql_query(&conn, sql.data()))        //执行SQL语句
     {
         printf("insert failed (%s)\n",mysql_error(&conn));
@@ -102,7 +117,7 @@ bool LoginDao::addUser(string name,string email,int role_id,int depart_id,string
     return true;
 }
 
-bool LoginDao::deleteUser(string name,string password){
+bool UserDao::deleteUser(string name,string password){
 
     MYSQL conn=fetchConn();
 
@@ -129,7 +144,7 @@ bool LoginDao::deleteUser(string name,string password){
 
 }
 
-bool LoginDao::deleteUserById(int id){
+bool UserDao::deleteUserById(int id){
     MYSQL conn=fetchConn();
 
     stringstream sqlBuilder;
@@ -152,7 +167,7 @@ bool LoginDao::deleteUserById(int id){
 
 }
 
-bool LoginDao::modifyUser(int id,string name,string email,int role_id,int depart_id,string remark,string password){
+bool UserDao::modifyUser(int id,string name,string email,int role_id,int depart_id,string remark,string password){
 
     MYSQL conn=fetchConn();
 
@@ -164,6 +179,7 @@ bool LoginDao::modifyUser(int id,string name,string email,int role_id,int depart
     string sql=sqlBuilder.str();
 
     cout<<sql<<endl;
+    mysql_query(&conn, "set names utf8");
 
     if(mysql_query(&conn, sql.data()))        //执行SQL语句
     {
@@ -178,7 +194,7 @@ bool LoginDao::modifyUser(int id,string name,string email,int role_id,int depart
 }
 
 
-map<string,string> LoginDao:: getUserById(int id){
+map<string,string> UserDao:: getUserById(int id){
 
 
 
@@ -193,7 +209,7 @@ map<string,string> LoginDao:: getUserById(int id){
 
     cout<<sql<<endl;
 
-    mysql_query(&conn,"set names gbk");
+    mysql_query(&conn, "set names utf8");
 
     if (0 == mysql_query(&conn, sql.data()))
     {
@@ -250,7 +266,7 @@ map<string,string> LoginDao:: getUserById(int id){
 
 
 }
-list<map<string,string>> LoginDao::selectUsers(string name,string email,int role_id,int depart_id,string password,\
+list<map<string,string>> UserDao::selectUsers(string name,string email,int role_id,int depart_id,string password,\
                                                int pageSize,int currentPage){
 
 
@@ -290,7 +306,7 @@ list<map<string,string>> LoginDao::selectUsers(string name,string email,int role
 
     cout<<sql<<endl;
 
-    mysql_query(&conn,"set names gbk");
+    mysql_query(&conn, "set names utf8");
 
     if (0 == mysql_query(&conn, sql.data()))
     {

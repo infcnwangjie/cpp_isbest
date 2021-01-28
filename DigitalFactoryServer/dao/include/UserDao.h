@@ -6,13 +6,13 @@
 
 using namespace std;
 
-class  LoginDao{
+class  UserDao{
 
 public:
-    LoginDao(){
+    UserDao(){
 
     }
-    ~LoginDao(){
+    ~UserDao(){
         delete connectPool;
     }
 

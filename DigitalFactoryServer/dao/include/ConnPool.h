@@ -1,7 +1,7 @@
 #ifndef BASEDAO_H
 #define BASEDAO_H
 
-#endif // BASEDAO_H
+
 
 #include "mysql.h"
 #include <iostream>
@@ -48,3 +48,4 @@ protected:
 
     mutex lock;
 };
+#endif // BASEDAO_H

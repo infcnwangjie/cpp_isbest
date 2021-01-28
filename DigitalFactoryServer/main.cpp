@@ -8,8 +8,12 @@ using namespace  std;
 
 #include "mysql.h"
 
+#define DEBUG 1
 
-#include "LoginDao.h"
+#ifdef DEBUG
+#include "UserDao.h"
+#include "UserRoleDao.h"
+#endif
 
 void testmysql(){
 
@@ -71,10 +75,10 @@ void testmysql(){
 
 
 void testLogin(){
-    LoginDao a;
+    UserDao a;
 
     a.addUser("cyi","cyi@163.com",1,1,"test");
-    a.login("admin","admin","dd");
+    a.login("cyi","78","dd");
     a.modifyUser(5,"cyi","wj@163.com",2,2,"testmodify","2323");
     //    a.deleteUserById(6);
     //   cout<< a.getUserById(1)["name"]<<endl;
@@ -84,11 +88,27 @@ void testLogin(){
 }
 
 
+void testRole(){
+    UserRoleDao a;
+    a.addRole("测试","测试可行");
+    a.addRole("仓库管理员","仓库");
+    a.addRole("工程主管","工程主管");
+    a.addRole("车间主任","车间");
+    for(map<string,string> record :a.selectRoles()){
+        cout<< record["name"]<<endl;
+    }
+}
+
 int main(int argc, char *argv[])
 {
 
+
+#ifdef DEBUG
     //testmysql();
-    testLogin();
+//    testLogin();
+    testRole();
+#endif
+
 
     QApplication a(argc, argv);
     MainWindow w;
