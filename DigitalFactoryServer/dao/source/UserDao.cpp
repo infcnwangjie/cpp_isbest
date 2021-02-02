@@ -15,12 +15,12 @@ bool UserDao::login(string user,string password,string registcode){
 }
 
 
-bool UserDao::addUser(string name,string email,int role_id,int depart_id,string remark,string password){
+bool UserDao::addUser(string name,string email,int staffposition_id,int role_id,int depart_id,string remark,string password){
 
 
     stringstream sqlBuilder;
-    sqlBuilder<<"insert into user(name,password,email,role_id,depart_id,remark) values"<<"('"<<name<<"','"
-             <<password<<"','"<<email<<"',"<<role_id<<","<<depart_id<<",'"<<remark<<"')";
+    sqlBuilder<<"insert into user(name,password,email,staff_positionid,role_id,depart_id,remark) values"<<"('"<<name<<"','"
+             <<password<<"','"<<email<<"',"<<staffposition_id<<","<<role_id<<","<<depart_id<<",'"<<remark<<"')";
 
     string sql=sqlBuilder.str();
 
@@ -56,11 +56,11 @@ bool UserDao::deleteUserById(int id){
     return deleteDatas(sql);
 }
 
-bool UserDao::modifyUser(int id,string name,string email,int role_id,int depart_id,string remark,string password){
+bool UserDao::modifyUser(int id,string name,string email,int staffposition_id,int role_id,int depart_id,string remark,string password){
 
 
     stringstream sqlBuilder;
-    sqlBuilder<<"update user set name='"<<name<<"',password='"<<password<<"',email='"<<email<<"',role_id="<<role_id\
+    sqlBuilder<<"update user set name='"<<name<<"',password='"<<password<<"',email='"<<email<<"',staffposition_id="<<staffposition_id<<",role_id="<<role_id\
              <<",depart_id="<<depart_id<<",remark='"<<remark<<"'"
             <<" where id="<<id;
 
@@ -85,7 +85,7 @@ map<string,string> UserDao:: getUserById(int id){
     return getOne(sql);
 
 }
-list<map<string,string>> UserDao::selectUsers(string name,string email,int role_id,int depart_id,string password,\
+list<map<string,string>> UserDao::selectUsers(string name,string email,int staffposition_id,int role_id,int depart_id,string password,\
                                               int pageSize,int currentPage){
 
 
@@ -110,6 +110,9 @@ list<map<string,string>> UserDao::selectUsers(string name,string email,int role_
             sqlBuilder<<"  password='"<<password<<"'";
         }
 
+        if(staffposition_id!=0){
+            sqlBuilder<<" staff_positionid="<<staffposition_id<<"";
+        }
         if(role_id!=0){
             sqlBuilder<<" role_id="<<role_id<<"";
         }

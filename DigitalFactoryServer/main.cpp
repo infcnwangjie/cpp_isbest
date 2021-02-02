@@ -14,6 +14,10 @@ using namespace  std;
 #include "UserDao.h"
 #include "UserRoleDao.h"
 #include "DeptDao.h"
+#include "tinyjson.hpp"
+#include <cassert>
+using namespace std;
+using namespace tiny;
 #endif
 
 void testmysql(){
@@ -76,16 +80,16 @@ void testmysql(){
 
 
 void testLogin(){
-    UserDao a;
+    //    UserDao a;
 
-    a.addUser("cyi","cyi@163.com",1,1,"test");
-    a.login("cyi","78","dd");
-    a.modifyUser(5,"cyi","wj@163.com",2,2,"testmodify","2323");
-    //    a.deleteUserById(6);
-    //   cout<< a.getUserById(1)["name"]<<endl;
-    for(map<string,string> record :a.selectUsers()){
-        cout<< record["name"]<<endl;
-    }
+    //    a.addUser("cyi","cyi@163.com",1,1,"test");
+    //    a.login("cyi","78","dd");
+    //    a.modifyUser(5,"cyi","wj@163.com",2,2,"testmodify","2323");
+    //    //    a.deleteUserById(6);
+    //    //   cout<< a.getUserById(1)["name"]<<endl;
+    //    for(map<string,string> record :a.selectUsers()){
+    //        cout<< record["name"]<<endl;
+    //    }
 }
 
 
@@ -108,6 +112,133 @@ void testDept(){
     }
 }
 
+void  testJson(){
+
+    string jsonstring = "\
+    {\
+            \"name\":\"lier  gou\",\
+             \"age\" : 26.9,\
+             \"data\" : [\
+    {\
+            \"one\":\"chenone\",\
+             \"two\" : {\
+             \"love1\":\"2233\",\
+             \"love2\":44444\
+}\
+},\
+    {\
+        \"one\":\"chen22\",\
+        \"two\" : {\
+        \"love1\":\"8899\",\
+        \"love2\":10000\
+    }\
+}\
+],\
+\"lang\":\"2cpp\"\
+}\
+";
+
+string jsonstring2 = "\
+{\
+        \"name\":\"liergou\",\
+         \"age\" : 26.9,\
+         \"data\" : [\
+{\
+        \"one\":\"chenone\",\
+         \"two\" : [\
+         \"love_chen\",\
+         \"love_hui\"\
+        ]\
+        },\
+{\
+        \"one\":\"chen22\",\
+         \"two\" : [\
+         \"love_chen2\",\
+         \"love_hui2\"\
+        ]\
+        }\
+        ],\
+        \"lang\":\"cpp\"\
+        }\
+        ";
+
+        string jsonstring3 = "\
+{\
+        \"xx\": {\
+         \"a\": 1,\
+         \"b\" : 2\
+        }\
+        }";
+
+cout << "\nTEST 99 READ JSON" << endl;
+// read
+TinyJson json;
+json.ReadJson(jsonstring3);
+
+xobject data = json.Get<xobject>("xx");
+for (int i = 0; i < data.Count(); i++) {
+    data.Enter(i);
+    int one = data.Get<int>("a");
+    int two = data.Get<int>("b");
+    int three = data.Get<int>("c", 99);
+    assert(one == 1);
+    assert(two == 2);
+    assert(three == 99);
+}
+cout << "TEST 99 PASS" << endl;
+
+
+
+cout << "\nTEST 2 READ JSON" << endl;
+    // read
+    TinyJson json2;
+    json.ReadJson(jsonstring2);
+
+    string name = json2.Get<string>("name");
+    float age = json2.Get<float>("age");
+    string lang = json2.Get<string>("lang");
+
+    assert(name == "liergou");
+    assert(age > 26 && age < 27);
+    assert(lang == "cpp");
+
+    xarray data2 = json2.Get<xarray>("data");
+    for (int i = 0; i < data2.Count(); i++) {
+        data2.Enter(i);
+        string one = data2.Get<string>("one");
+        if (i == 0)
+        {
+            assert(one == "chenone");
+        }
+        if (i == 1)
+        {
+            assert(one == "chen22");
+        }
+        xarray two = data2.Get<xarray>("two");
+        for (int ii = 0; ii < two.Count(); ii++) {
+            two.Enter(ii);
+            string val = two.Get<string>();
+            if (i == 0 && ii == 0)
+            {
+                assert(val == "love_chen");
+            }
+            if (i == 0 && ii == 1)
+            {
+                assert(val == "love_hui");
+            }
+            if (i == 1 && ii == 0)
+            {
+                assert(val == "love_chen2");
+            }
+            if (i == 1 && ii == 1)
+            {
+                assert(val == "love_hui2");
+            }
+        }
+    }
+    cout << "TEST 2 PASS" << endl;
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -116,8 +247,9 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
     //testmysql();
     testLogin();
-//    testRole();
-//    testDept();
+    //    testRole();
+    //    testDept();
+    testJson();
 #endif
 
 
