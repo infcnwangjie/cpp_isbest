@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <QThread>
 #include <QMessageBox>
+#include<iostream>
 using namespace std;
 
 class BehindServerThread:public QThread
@@ -33,8 +34,11 @@ private slots:
     }
     void ReceiveData(){
          qDebug()<<"接收到客户端的发送的信息";
-        QByteArray arr=this->TCP_connectSocket->readAll();
-        qDebug()<<arr;
+        QByteArray bytearryinfo=this->TCP_connectSocket->readAll();
+
+        QString info=bytearryinfo;
+        std::cout<<info.toStdString();
+
 
         this->TCP_connectSocket->write(" i have receive from client");
     }
