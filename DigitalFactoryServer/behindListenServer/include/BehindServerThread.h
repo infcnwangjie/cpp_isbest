@@ -11,40 +11,21 @@ using namespace std;
 
 class BehindServerThread:public QThread
 {
-
-
     Q_OBJECT
 public:
     BehindServerThread();
     ~BehindServerThread();
 
-
-
 private:
-
-
     QTcpServer *TCP_server; //QTcpServer服务器
     QTcpSocket *TCP_connectSocket; //与客户端连接套接字
 
-private slots:
-    void newConnection(){
-        this->TCP_connectSocket=this->TCP_server->nextPendingConnection();
-        qDebug()<<"有新的连接";
-        connect(this->TCP_connectSocket,SIGNAL(readyRead()),this,SLOT(ReceiveData()));
-    }
-    void ReceiveData(){
-         qDebug()<<"接收到客户端的发送的信息";
-        QByteArray bytearryinfo=this->TCP_connectSocket->readAll();
-
-        QString info=bytearryinfo;
-        std::cout<<info.toStdString();
-
-
-        this->TCP_connectSocket->write(" i have receive from client");
-    }
+//private slots:
+private:
+    void newConnection();
+    void ReceiveData();
 
 public:
-
 
     void run(){
 
