@@ -8,6 +8,9 @@
 class MainWindow;//extern 关键字 只能用于变量和方法
 class LoginWindow;
 
+/***
+功能：用来输入用户名、密码的登录子元素
+**/
 class LoginForm:public QDialog{
     Q_OBJECT
 public:
@@ -45,9 +48,9 @@ public:
     }
 public:
     Ui::LoginDialogUi * ui;
-public slots:
+//public slots:
 
-    void onlogin();//点击登录按钮
+//    void onlogin();//点击登录按钮
 
 
 private:

@@ -64,6 +64,14 @@ file(GLOB MAINWINDOW_HEADERS ${MAINWINDOW_INCLUEDE_DIRECTORY}/*.h)
 #file(GLOB MAINWINDOW_CPPS ${MAINWINDOW_SOURCE_DIRECTORY}/*.cpp)
 
 
+#common
+set(COMMON_SOURCE_DIRECTORY  ${DIGITAL_FACTORY_PROJECT_DIR}/common/source)
+set(COMMON_INCLUEDE_DIRECTORY ${DIGITAL_FACTORY_PROJECT_DIR}/common/include)
+#set(SERVICE_UI_DIRECTORY ${DIGITAL_FACTORYSERVER_PROJECT_DIR}/service)
+include_directories(${COMMON_INCLUEDE_DIRECTORY})
+aux_source_directory(${COMMON_SOURCE_DIRECTORY}   COMMON_CPPS )
+file(GLOB COMMON_HEADERS ${COMMON_INCLUEDE_DIRECTORY}/*.h ${COMMON_INCLUEDE_DIRECTORY}/*.hpp)
+
 if(ANDROID)
     add_library(DigitalFactory SHARED
         main.cpp
@@ -79,6 +87,8 @@ else()
 
         ${MAINWINDOW_HEADERS}
         ${MAINWINDOW_CPPS}
+        ${COMMON_HEADERS}
+        ${COMMON_CPPS}
 #        loginwindow.h
 #        meanshift.h
 #        meanshift.cpp

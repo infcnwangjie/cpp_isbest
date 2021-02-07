@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QDesktopWidget>
 #include <QPushButton>
+#include <QMessageBox>
 using namespace Ui;
 
 
@@ -14,13 +15,13 @@ LoginWindow::LoginWindow(QWidget *parent)
 
 
     this->loginDialog=new LoginForm(this);
-//    this->setWindowTitle("登录");
+    //    this->setWindowTitle("登录");
     this->setWindowIcon(QIcon(":/resource/images/xiaoren.png"));
 
 
     ui->setupUi(this);
-//    this->showNormal();
-//    this->setWindowFlags(this->windowFlags() &~ Qt::WindowMaximizeButtonHint);//禁止最大和最小化
+    //    this->showNormal();
+    //    this->setWindowFlags(this->windowFlags() &~ Qt::WindowMaximizeButtonHint);//禁止最大和最小化
 
     loginDialog->setStyleSheet ("background-color: rgb(255, 255, 255);");
     loginDialog->show();
@@ -28,14 +29,11 @@ LoginWindow::LoginWindow(QWidget *parent)
     loginLayout->addWidget(loginDialog);
     loginLayout->setAlignment(Qt::AlignCenter);
     this->centralWidget()->setLayout(loginLayout);
-//    QObject::connect(&this->processcore,&ImgProcessCore::finish,&this->afterProcessSlot,&AfterProcessSlot::receiveMsg);
-    QObject::connect(this->loginDialog->ui->loginButton, &QPushButton::clicked,this->loginDialog, &LoginForm::onlogin);
+    //    QObject::connect(&this->processcore,&ImgProcessCore::finish,&this->afterProcessSlot,&AfterProcessSlot::receiveMsg);
+    QObject::connect(this->loginDialog->ui->loginButton, &QPushButton::clicked,this, &LoginWindow::onlogin);
 
-
-    m_pTcpSocket=new QTcpSocket(nullptr);
-    this->m_pTcpSocket->connectToHost(QHostAddress::LocalHost,6666,QTcpSocket::ReadWrite);
-    connect(this->m_pTcpSocket,SIGNAL(connected()),this,SLOT(connected()));
-
+    initSocket();//初始化socket
+    connectServer();//连接服务器
 }
 
 void LoginWindow::paintEvent(QPaintEvent *event){
@@ -55,3 +53,98 @@ LoginWindow::~LoginWindow()
     //    delete loginUi;
 }
 
+void LoginWindow::initSocket(){
+    m_pTcpSocket=new QTcpSocket(nullptr);
+//    connect(m_pTcpSocket,SIGNAL(error(QAbstractSocket::SocketError)),
+//            this,SLOT(displayError(QAbstractSocket::SocketError)));   //发生错误时执行displayError函数
+}
+
+void LoginWindow::connectServer(){
+    this->m_pTcpSocket->connectToHost(QHostAddress::LocalHost,6666,QTcpSocket::ReadWrite);
+     connect(this->m_pTcpSocket,SIGNAL(connected()),this,SLOT(connected()));//意义不大，告知 连接成功了
+     connect(this->m_pTcpSocket,SIGNAL(readyRead()),this,SLOT(fetchLoginMessageFromServer()));
+
+}
+
+
+/*****************
+ * 点击登录
+ *
+*/
+void LoginWindow::onlogin(){
+
+
+
+    if(connectStatus==false){
+        QMessageBox::warning(this,"错误提示","服务器连接失败");
+        return;
+    }
+
+    auto user= this->loginDialog->ui->idEdit->text();
+
+    auto password=this->loginDialog->ui->passwdEdit->text();
+
+    if(user.isEmpty() ||password.isEmpty()){
+        QMessageBox::warning(this,"错误提示","请输入用户名密码");
+        return;
+    }
+
+    TinyJson loginJson;
+    loginJson["method"].Set("login");
+
+    TinyJson loginData;
+    loginData["user"].Set(user.toStdString());
+    loginData["password"].Set(password.toStdString());
+
+
+
+    loginJson["data"].Set(loginData);
+
+
+    string str = loginJson.WriteJson();
+    cout << "json string: \r\n" << endl;
+    cout << str << endl;
+
+
+    QString jsonStr(str.data());
+    QByteArray jsonbytes;
+    jsonbytes.append(jsonStr);
+    this->m_pTcpSocket->write(jsonbytes);
+
+
+
+
+
+}
+
+void LoginWindow::connected(){
+    qDebug()<<"连接成功!";
+    connectStatus=true;
+    //    QString string = "Hello";
+    //    QByteArray array;
+    //    array.append(string);
+    //    this->m_pTcpSocket->write(array);
+    //    connect(this->m_pTcpSocket,SIGNAL(readyRead()),this,SLOT(readyread()));
+}
+
+void LoginWindow::fetchLoginMessageFromServer(){
+    QByteArray arr=this->m_pTcpSocket->readAll();
+    qDebug() << arr;  //读取socket中的数据并打印
+    QString jsonInfo(arr);
+
+    TinyJson json;
+    json.ReadJson(jsonInfo.toStdString());
+
+    string loginstatus=json.Get<string>("loginstatus");
+
+    if(loginstatus=="ok"){
+
+        this->mainWindow=new MainWindow;
+        this->mainWindow->show();
+        this->hide();
+
+    }else{
+    }
+
+
+}

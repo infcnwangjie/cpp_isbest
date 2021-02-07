@@ -12,14 +12,18 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 
+#include "tinyjson.hpp"
+#include <cassert>
+using namespace std;
+using namespace tiny;
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class LoginWindowUi; }
 QT_END_NAMESPACE
 
-
-
-
-
+/****
+处理登录
+**/
 
 class LoginWindow : public QMainWindow
 {
@@ -38,21 +42,21 @@ private:
     LoginForm  * loginDialog;// 登录窗体
     QTcpSocket * m_pTcpSocket;
 
-private slots:
-    void connected(){
-        qDebug()<<"连接成功!";
-        QString string = "Hello";
-        QByteArray array;
-        array.append(string);
-        this->m_pTcpSocket->write(array);
+    MainWindow * mainWindow;//主窗口
+    LoginWindow *loginWindow;//登录窗口
+    friend class MainWindow;
 
-        int i=0;
-         connect(this->m_pTcpSocket,SIGNAL(readyRead()),this,SLOT(readyread()));
-    }
+    //private slots:
+private  slots:
+    void initSocket();
+    void connectServer();
+    void onlogin();//点击登录
+    void connected();//连接成功后触发
+    void fetchLoginMessageFromServer();//可读取的时候调用
 
-    void readyread(){
-        QByteArray arr=this->m_pTcpSocket->readAll();
-        qDebug() << arr;  //读取socket中的数据并打印
-    }
+private :
+    bool connectStatus=false;//连接状态
+
+
 };
 #endif // MAINWINDOW_H
