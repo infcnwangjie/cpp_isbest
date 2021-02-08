@@ -2,6 +2,11 @@
 #include "ConnPool.h"
 
 ConnPool * ConnPool::instance=nullptr;
+
+std::map<std::string,std::string> ConnPool::dbMap;
+
+mutex ConnPool::mutexobj;
+
 ConnPool::ConnPool(){
     //    this->initConn();
 }
@@ -40,7 +45,7 @@ void ConnPool:: loadDbConfig(){
 
 }
 
-MYSQL ConnPool:: createOneConnect(){
+MYSQL  ConnPool:: createOneConnect(){
     if(this->dbMap.size()==0){
         this->loadDbConfig();
     }
@@ -52,9 +57,10 @@ MYSQL ConnPool:: createOneConnect(){
     stringstream porttemp(dbMap["databasename"]);
     int port =0;
     porttemp>>port; // 数据库名称（已存在）
-    MYSQL conn;
+    MYSQL   conn;
     mysql_init(&conn);
     mysql_real_connect(&conn, host, user, pass, db, port, 0, 0);
+
     return conn;
 }
 
@@ -76,10 +82,11 @@ bool ConnPool::initConns(int maxConnectSize){
     bool succuss=false;
     try {
 
-        for(int i=0;i<maxConnectSize;i++){
-            MYSQL conn=  this-> createOneConnect();
-            connList.push_back(conn);
-        }
+//        for(int i=0;i<maxConnectSize;i++){
+
+//            MYSQL conn=  this-> createOneConnect();
+//            connList.push_back(conn);
+//        }
 
         this->successConn=true;
     } catch (...) {
@@ -93,11 +100,13 @@ bool ConnPool::closeConn(){
 
     try {
 
-        if(this->connList.size()==0)
-            return true;
-        for(MYSQL conn:this->connList){
-            mysql_close(&conn);
-        }
+        //        if(this->connList.size()==0)
+        //            return true;
+        //        for(MYSQL conn:this->connList){
+        //            mysql_close(&conn);
+        //        }
+//        mysql_close(&mysqlconn);
+
 
         return true;
 
@@ -108,52 +117,43 @@ bool ConnPool::closeConn(){
 
 
 ConnPool * ConnPool::getInstance(){
+
+    unique_lock<mutex> lock(mutexobj);
     if(instance==nullptr){
 
         instance=new ConnPool();
+        lock.unlock();
     }
+
 
     return instance;
 }
 
 
-MYSQL ConnPool:: getConnect(){
+MYSQL ConnPool:: getConnect( ){
+    std::unique_lock<std::mutex> uniqlock(this->mutexobj);
+    MYSQL mysqlconn=createOneConnect();
 
-    std::unique_lock<std::mutex> uniqlock(this->lock);
-
-    if(this->dbMap.size()==0){
-        this->loadDbConfig();
-    }
-    const char *host =dbMap["databaseip"].data();
-    const char *user = dbMap["databaseuser"].data();
-    const char *pass = dbMap["databasepassword"].data();
-    const char *db =dbMap["databasename"].data(); // 数据库名称（已存在）
-    stringstream porttemp(dbMap["databasename"]);
-    int port =0;
-    porttemp>>port; // 数据库名称（已存在）
-
-
-    if(connList.size()>0){
-        mysqlconn=connList.front();
-
-        if (mysql_real_connect(&mysqlconn, host, user, pass, db, port, 0, 0)){
-            connList.pop_front();
-        }else{
-            mysqlconn=createOneConnect();connList.push_back(mysqlconn);
-        }
-
-
-    }else{
-        initConns();
-
-        mysqlconn=connList.front();
-        connList.pop_front();
-        return mysqlconn;
-    }
     uniqlock.unlock();
 
+    //    if(!connList.empty()){
+    //        std::unique_lock<std::mutex> uniqlock(this->mutexobj);
+    //        mysqlconn=connList.front();
+    //        connList.pop_front();
+    //        uniqlock.unlock();
 
-    return  mysqlconn;
+    //    }else{
+    //        std::unique_lock<std::mutex> uniqlock(this->mutexobj);
+    //        initConns();
+
+    //        mysqlconn=connList.front();
+    //        connList.pop_front();
+    //        uniqlock.unlock();
+
+    //    }
+
+
+    return mysqlconn;
 
 }
 

@@ -13,12 +13,12 @@ public:
 
     }
     ~BaseDao(){
-        delete connectPool;
+//        delete connectPool;
     }
 
 
 public:
-    virtual MYSQL fetchConn();
+    virtual MYSQL  fetchConn();
 
     bool add(string sql);
     bool deleteDatas(string sql);

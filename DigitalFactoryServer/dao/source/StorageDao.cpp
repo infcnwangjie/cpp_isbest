@@ -23,7 +23,6 @@ bool StorageDao::deleteStorage(string sn){
     return deleteDatas(sql);
 }
 bool StorageDao::deleteStorageById(int id){
-    MYSQL conn=fetchConn();
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  storage where id="<<id;

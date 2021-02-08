@@ -56,6 +56,8 @@ private  slots:
 
 private :
     bool connectStatus=false;//连接状态
+    bool readwriteStatus=false;//写入状态
+    bool loginclick=false;
 
 
 };

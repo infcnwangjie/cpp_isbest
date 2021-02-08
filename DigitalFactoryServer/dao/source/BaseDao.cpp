@@ -4,7 +4,8 @@
 MYSQL BaseDao::fetchConn(){
     connectPool=this->connectPool->getInstance();
 
-    MYSQL conn=connectPool->getConnect();
+    MYSQL conn =connectPool->getConnect();
+
     return conn;
 }
 
@@ -15,7 +16,8 @@ bool BaseDao::add(string sql){
 
 
 
-    MYSQL conn=fetchConn();
+
+    MYSQL  conn=  fetchConn();
 
 
     cout<<sql<<endl;
@@ -36,7 +38,10 @@ bool BaseDao::add(string sql){
 
 bool BaseDao::deleteDatas(string sql){
 
-    MYSQL conn=fetchConn();
+
+    MYSQL  conn=fetchConn();
+
+
 
 
 
@@ -61,7 +66,10 @@ bool BaseDao::deleteDatas(string sql){
 
 bool BaseDao::modify(string sql){
 
-    MYSQL conn=fetchConn();
+
+    MYSQL   conn=  fetchConn();
+
+
 
     cout<<sql<<endl;
     mysql_query(&conn, "set names utf8");
@@ -85,7 +93,11 @@ map<string,string> BaseDao:: getOne(string sql){
 
     map<string,string> data;
 
-    MYSQL conn=fetchConn();
+
+    MYSQL  conn=fetchConn();
+
+
+
 
     cout<<sql<<endl;
 
@@ -103,30 +115,33 @@ map<string,string> BaseDao:: getOne(string sql){
 
 
         const unsigned int fields = mysql_num_fields(result);
-        //        cout << "每条记录总共 " << fields << " 个字段" << endl;
+
         MYSQL_FIELD *field = nullptr;
         string fieldNames[fields];
         for (unsigned int i = 0; i < fields; i++)
         {
             field = mysql_fetch_field_direct(result, i);
             fieldNames[i]=field->name ;
-            //            cout << field->name << "\t\t";
+
         }
 
-        MYSQL_ROW row = nullptr;
-        row = mysql_fetch_row(result);
-        while (nullptr != row)
+        MYSQL_ROW row = mysql_fetch_row(result);
+
+        while (nullptr != row )
         {
             for (unsigned int i = 0; i < fields; ++i)
             {
                 //                field = mysql_fetch_field_direct(result, i);
-                if (row[i] != nullptr)
-                    data.insert(pair<string,string>(fieldNames[i],row[i]));
+                if (row[i] != nullptr){
+                    //                    data.insert(pair<string,string>(fieldNames[i],row[i]));
+                    data[fieldNames[i]]=row[i];
+                    cout<<row[i];
+                }
                 else
                     cout << "null" << "\t\t";
             }
             cout << endl;
-            row = mysql_fetch_row(result);
+            break;
         }
         mysql_free_result(result);
         //         mysql_close(&conn);
@@ -136,8 +151,7 @@ map<string,string> BaseDao:: getOne(string sql){
     }
     else
     {
-        cout << "no find " << \
-                mysql_error(&conn) << endl;
+        cout << "no find ";
         //         mysql_close(&conn);
         //        return false;
 
@@ -152,7 +166,10 @@ list<map<string,string>> BaseDao::query(string sql){
 
     list<map<string,string>> datas;
 
+
     MYSQL conn=fetchConn();
+
+
 
 
     cout<<sql<<endl;

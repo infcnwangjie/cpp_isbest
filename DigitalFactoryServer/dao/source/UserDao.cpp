@@ -10,8 +10,9 @@ bool UserDao::login(string user,string password,string registcode){
     string sql=sqlBuilder.str();
 
     map<string,string> userInfo=getOne(sql);
-    cout<<userInfo.size();
-    return userInfo.size()!=0;
+    if (userInfo.size()==0) return false;
+
+    return true;
 }
 
 

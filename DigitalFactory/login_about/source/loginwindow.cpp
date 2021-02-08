@@ -34,6 +34,7 @@ LoginWindow::LoginWindow(QWidget *parent)
 
     initSocket();//初始化socket
     connectServer();//连接服务器
+
 }
 
 void LoginWindow::paintEvent(QPaintEvent *event){
@@ -55,15 +56,15 @@ LoginWindow::~LoginWindow()
 
 void LoginWindow::initSocket(){
     m_pTcpSocket=new QTcpSocket(nullptr);
-//    connect(m_pTcpSocket,SIGNAL(error(QAbstractSocket::SocketError)),
-//            this,SLOT(displayError(QAbstractSocket::SocketError)));   //发生错误时执行displayError函数
+    //    connect(m_pTcpSocket,SIGNAL(error(QAbstractSocket::SocketError)),
+    //            this,SLOT(displayError(QAbstractSocket::SocketError)));   //发生错误时执行displayError函数
 }
 
 void LoginWindow::connectServer(){
     this->m_pTcpSocket->connectToHost(QHostAddress::LocalHost,6666,QTcpSocket::ReadWrite);
-     connect(this->m_pTcpSocket,SIGNAL(connected()),this,SLOT(connected()));//意义不大，告知 连接成功了
-     connect(this->m_pTcpSocket,SIGNAL(readyRead()),this,SLOT(fetchLoginMessageFromServer()));
 
+    connect(this->m_pTcpSocket,SIGNAL(connected()),this,SLOT(connected()));//意义不大，告知 连接成功了
+    connect(this->m_pTcpSocket,SIGNAL(readyRead()),this,SLOT(fetchLoginMessageFromServer()));
 }
 
 
@@ -73,12 +74,9 @@ void LoginWindow::connectServer(){
 */
 void LoginWindow::onlogin(){
 
-
-
-    if(connectStatus==false){
-        QMessageBox::warning(this,"错误提示","服务器连接失败");
-        return;
-    }
+    //     if(connectStatus==false){
+    //         connectServer();
+    //     }
 
     auto user= this->loginDialog->ui->idEdit->text();
 
@@ -103,17 +101,25 @@ void LoginWindow::onlogin(){
 
     string str = loginJson.WriteJson();
     cout << "json string: \r\n" << endl;
-    cout << str << endl;
+    qDebug() << QString::fromStdString(str) << endl;
 
 
     QString jsonStr(str.data());
     QByteArray jsonbytes;
     jsonbytes.append(jsonStr);
+
+    if(this->m_pTcpSocket==nullptr || !(this->m_pTcpSocket->isReadable() || this->m_pTcpSocket->isWritable())){
+        if(this->m_pTcpSocket!=nullptr){
+            this->m_pTcpSocket->close();
+        }
+        connectServer();
+
+    }
+
     this->m_pTcpSocket->write(jsonbytes);
+    this->m_pTcpSocket->flush();
 
-
-
-
+    loginclick=true;
 
 }
 
@@ -125,25 +131,44 @@ void LoginWindow::connected(){
     //    array.append(string);
     //    this->m_pTcpSocket->write(array);
     //    connect(this->m_pTcpSocket,SIGNAL(readyRead()),this,SLOT(readyread()));
+    //    this->m_pTcpSocket->waitForReadyRead();
+    //    readwriteStatus=true;
 }
 
 void LoginWindow::fetchLoginMessageFromServer(){
-    QByteArray arr=this->m_pTcpSocket->readAll();
-    qDebug() << arr;  //读取socket中的数据并打印
-    QString jsonInfo(arr);
 
-    TinyJson json;
-    json.ReadJson(jsonInfo.toStdString());
 
-    string loginstatus=json.Get<string>("loginstatus");
 
-    if(loginstatus=="ok"){
+    //    this->m_pTcpSocket->waitForReadyRead();
 
-        this->mainWindow=new MainWindow;
-        this->mainWindow->show();
-        this->hide();
+    if(loginclick==true && this->m_pTcpSocket->bytesAvailable()){
+        qDebug() << loginclick;
+        QByteArray arr=this->m_pTcpSocket->readAll();
+        qDebug() << arr;  //读取socket中的数据并打印
+        QString jsonInfo(arr);
 
-    }else{
+        TinyJson json;
+        json.ReadJson(jsonInfo.toStdString());
+
+        string loginstatus=json.Get<string>("loginstatus");
+
+        if(loginstatus=="ok"){
+            this->m_pTcpSocket->close();
+//            delete this->m_pTcpSocket;
+
+            this->mainWindow=new MainWindow;
+            this->mainWindow->show();
+            this->hide();
+
+        }else if(loginstatus=="false"){
+            QMessageBox::warning(this,"错误提示","用户或密码错误");
+            loginclick=false;
+//            this->m_pTcpSocket->close();
+//            delete this->m_pTcpSocket;
+//            initSocket();
+//            connectServer();
+        }
+
     }
 
 

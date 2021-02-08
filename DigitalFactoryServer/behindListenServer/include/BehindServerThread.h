@@ -7,19 +7,34 @@
 #include <QThread>
 #include <QMessageBox>
 #include<iostream>
+#include <mutex>
+#include <future>
+#include "tinyjson.hpp"
+#include <cassert>
+#include <mainWindow.h>
+using namespace tiny;
 using namespace std;
+
+
+extern string  processhandle(string  jsonInfo);
+
+
 
 class BehindServerThread:public QThread
 {
     Q_OBJECT
 public:
-    BehindServerThread(QTcpSocket *socket):itemSocket(socket){};
+    BehindServerThread( string jsonstr):jsonInfo(jsonstr),task(processhandle){
+    };
     ~BehindServerThread();
+
 
 private:
 
+     string jsonInfo;
+     packaged_task<string(string)> task;
+     friend class MainWindow;
 
-   QTcpSocket *itemSocket;
 
 
 public:

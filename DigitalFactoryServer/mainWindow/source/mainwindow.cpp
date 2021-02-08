@@ -1,10 +1,46 @@
 #include "mainwindow.h"
 //#include "./ui_mainwindow.h"
 #include<mainwindowui.h>
+#include <UserDao.h>
 #include "tinyjson.hpp"
 #include <cassert>
 using namespace std;
 using namespace tiny;
+
+string  processhandle(string  jsonInfo){
+    //    unique_lock<mutex> lock(mutexobj);
+    TinyJson json;
+    json.ReadJson(jsonInfo);
+    qDebug()<<QString::fromStdString(jsonInfo);
+    string method=json.Get<string>("method");
+    TinyJson loginJson;
+    if(method=="login"){
+
+        xobject data = json.Get<xobject>("data");
+        if(data.Count()==0){
+            loginJson["loginstatus"].Set("false");
+        }else{
+            data.Enter(0);
+            string user = data.Get<string>("user");
+            string password = data.Get<string>("password");
+            UserDao userDao;
+            bool success=userDao.login(user,password,"");
+            qDebug()<<QString::fromStdString(jsonInfo);
+            if(success){
+                qDebug()<<"login";
+                loginJson["loginstatus"].Set("ok");
+            }
+            else
+                loginJson["loginstatus"].Set("false");
+
+        }
+
+        string jsonstr = loginJson.WriteJson();
+        //        lock.unlock();
+        return jsonstr;
+    }
+}
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -33,15 +69,17 @@ void MainWindow::initServerSocket(){
 
         //与客户端连接套接字
         QTcpSocket *itemSocket=this->TCP_server->nextPendingConnection();
+
         if(itemSocket!=nullptr){
 
             qDebug()<<"有新的连接";
-            //            BehindServerThread thread(itemSocket);
+            //            clientSockets.push_back(itemSocket);
+
             connect(itemSocket,&QTcpSocket::readyRead,this,[=](){
                 MainWindow::ReceiveData(itemSocket);
-                //                thread.start();
-
             } );
+            //            itemSocket->waitForReadyRead();
+            //            MainWindow::ReceiveData(itemSocket);
 
 
 
@@ -57,55 +95,85 @@ void MainWindow::initServerSocket(){
 }
 
 
+void MainWindow::useThread(QTcpSocket *itemSocket){
+    QByteArray bytearryinfo=itemSocket->readAll();
+
+    QString info=bytearryinfo;
+
+    if(info.isNull()){
+        return;
+    }
+    std::cout<<info.toStdString();
+
+
+    TinyJson json;
+    json.ReadJson(info.toStdString());
+
+    packaged_task<string(string)> task(processhandle);
+    BehindServerThread thread(info.toStdString());
+    std::future<string> fu1=thread.task.get_future();
+    thread.start();
+
+
+    //    std::future<string> fu1=task.get_future();
+    //    std::thread th(std::move(task), info.toStdString());
+    //    th.join();
+
+
+    QString jsonStr=QString::fromStdString(fu1.get());
+
+//    QString jsonStr=QString::fromStdString(processhandle(info.toStdString()));
+
+    QByteArray jsonbytes;
+    jsonbytes.append(jsonStr);
+    qDebug()<<jsonStr;
+
+    if(itemSocket==nullptr){
+        QMessageBox::warning(this,"错误提示","指针为空");
+    }else{
+        if(itemSocket->isValid()){
+            itemSocket->write(jsonbytes);
+            itemSocket->flush();
+//            itemSocket->close();
+            //        delete itemSocket;
+        }
+
+    }
+
+
+    //    itemSocket->
+
+    //    itemSocket->close();
+    //    delete itemSocket;
+
+    //        }
+}
+
 void MainWindow::ReceiveData(QTcpSocket *itemSocket){
 
     //改成支持线程池
+    useThread(itemSocket);
 
-//    BehindServerThread thread(itemSocket);
-//    itemSocket->moveToThread(&thread);
-//    thread.start();
-//    thread.wait();
+    //    qDebug()<<clientSockets.size();
 
-        QByteArray bytearryinfo=itemSocket->readAll();
+    //    for(int i=0;i<clientSockets.size();i++){
+    //        if(clientSockets.at(i)->bytesAvailable()){
 
-        QString info=bytearryinfo;
-        std::cout<<info.toStdString();
+    //            useThread(clientSockets.at(i));
 
-
-        TinyJson json;
-        json.ReadJson(info.toStdString());
-
-        string method=json.Get<string>("method");
-
-
-        if(method=="login"){
-            //loginstatus
-            qDebug()<<"login";
-            qDebug()<<info;
-
-            TinyJson loginJson;
-            loginJson["loginstatus"].Set("ok");
-
-
-            string jsonstr = loginJson.WriteJson();
-            //        TCP_connectSocket->write(QString::fromStdString(jsonstr));
-
-
-
-            QString jsonStr=QString::fromStdString(jsonstr);
-            QByteArray jsonbytes;
-            jsonbytes.append(jsonStr);
-            qDebug()<<jsonStr;
-            itemSocket->write(jsonbytes);
-                    itemSocket->close();
-            //        delete itemSocket;
-
-        }
-
+    //        }
+    //    }
 
 
 
 }
+
+
+
+
+
+
+
 
 
 

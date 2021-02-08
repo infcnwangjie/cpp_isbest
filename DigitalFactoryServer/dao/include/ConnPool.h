@@ -27,23 +27,23 @@ public:
 
     void loadDbConfig();
 
-    MYSQL createOneConnect();
+    MYSQL  createOneConnect();
     bool initConns(int maxConnectSize=10);
 
     bool closeConn();
 
     static ConnPool * getInstance();
-    MYSQL getConnect();
+    MYSQL  getConnect();
 
 
 
 protected:
-    std::map<std::string,std::string> dbMap;
-    list<MYSQL> connList;
+    static std::map<std::string,std::string> dbMap;
+//    list<MYSQL> connList;
     MYSQL mysqlconn;
     bool successConn=false;
     static  ConnPool * instance;
 
-    mutex lock;
+    static mutex mutexobj;
 };
 #endif // CONNECTPOOL_H

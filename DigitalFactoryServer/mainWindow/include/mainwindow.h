@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <BehindServerThread.h>
+#include <vector>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,6 +23,7 @@ public slots:
 private:
     QTcpServer *TCP_server; //QTcpServer服务器
 //    QTcpSocket *itemSocket; //与客户端连接套接字
+    std::vector<QTcpSocket *> clientSockets;
 
 
 //    BehindServerThread * behindThread;
@@ -29,7 +32,7 @@ private:
 
 private slots:
     void initServerSocket();
-
     void ReceiveData(QTcpSocket *itemSocket);
+    void useThread(QTcpSocket *itemSocket);
 };
 #endif // MAINWINDOW_H

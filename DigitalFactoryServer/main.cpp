@@ -80,10 +80,10 @@ void testmysql(){
 
 
 void testLogin(){
-    //    UserDao a;
+        UserDao a;
 
     //    a.addUser("cyi","cyi@163.com",1,1,"test");
-    //    a.login("cyi","78","dd");
+        a.login("cyi","2323","dd");
     //    a.modifyUser(5,"cyi","wj@163.com",2,2,"testmodify","2323");
     //    //    a.deleteUserById(6);
     //    //   cout<< a.getUserById(1)["name"]<<endl;
@@ -270,10 +270,10 @@ int main(int argc, char *argv[])
 
 #ifdef DEBUG
     //testmysql();
-    testLogin();
+//    testLogin();
     //    testRole();
     //    testDept();
-    testJson();
+//    testJson();
 #endif
 
 
