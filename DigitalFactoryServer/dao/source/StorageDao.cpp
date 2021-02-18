@@ -1,7 +1,7 @@
 #include "StorageDao.h"
 
 
-bool StorageDao::addStorage(string sn, string name, string contact, string phone, string desc, int status, string address, string add_time){
+string StorageDao::addStorage(string sn, string name, string contact, string phone, string desc, int status, string address, string add_time){
 
 
     stringstream sqlBuilder;
@@ -10,9 +10,9 @@ bool StorageDao::addStorage(string sn, string name, string contact, string phone
 
     string sql=sqlBuilder.str();
 
-    return add(sql);
+    return sql;
 }
-bool StorageDao::deleteStorage(string sn){
+string StorageDao::deleteStorage(string sn){
 
 
     stringstream sqlBuilder;
@@ -20,18 +20,18 @@ bool StorageDao::deleteStorage(string sn){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 }
-bool StorageDao::deleteStorageById(int id){
+string StorageDao::deleteStorageById(int id){
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  storage where id="<<id;
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 }
-bool StorageDao::modifyStorage(int id, string sn, string name, string contact, string phone, string desc, int status, string address, string add_time){
+string StorageDao::modifyStorage(int id, string sn, string name, string contact, string phone, string desc, int status, string address, string add_time){
 
     stringstream sqlBuilder;
     sqlBuilder<<"update storage set sn='"<<sn<<"',name='"<<name<<"',contact='"<<contact<<"',phone='"<<phone<<"',desc='"<<desc<<"',status="\
@@ -40,9 +40,9 @@ bool StorageDao::modifyStorage(int id, string sn, string name, string contact, s
 
     string sql=sqlBuilder.str();
 
-    return modify(sql);
+    return sql;
 }
-map<string,string> StorageDao::getStorageById(int id){
+string StorageDao::getStorageById(int id){
     map<string,string> storeInfo;
 
 
@@ -51,10 +51,10 @@ map<string,string> StorageDao::getStorageById(int id){
 
     string sql=sqlBuilder.str();
 
-    return getOne(sql);
+    return sql;
 }
-list<map<string,string>> StorageDao::selectStorages(string sn,string name,string address,string phone,int status,string add_time\
-                                                    ,int pageSize,int currentPage){
+string StorageDao::selectStorages(string sn,string name,string address,string phone,int status,string add_time\
+                                  ,int pageSize,int currentPage){
     list<map<string,string>> storageInfos;
     stringstream sqlBuilder;
     sqlBuilder<<"select * from storage";
@@ -85,7 +85,7 @@ list<map<string,string>> StorageDao::selectStorages(string sn,string name,string
     sqlBuilder<<" limit "<<(currentPage-1)*pageSize<<","<<pageSize;
 
     string sql=sqlBuilder.str();
-    return query(sql);
+    return sql;
 
 }
 

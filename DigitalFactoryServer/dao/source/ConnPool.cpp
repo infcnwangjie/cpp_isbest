@@ -1,7 +1,7 @@
 
 #include "ConnPool.h"
 
-ConnPool * ConnPool::instance=nullptr;
+
 
 std::map<std::string,std::string> ConnPool::dbMap;
 
@@ -46,22 +46,16 @@ void ConnPool:: loadDbConfig(){
 }
 
 MYSQL  ConnPool:: createOneConnect(){
-    if(this->dbMap.size()==0){
-        this->loadDbConfig();
-    }
-    const char *host =dbMap["databaseip"].data();
-    const char *user = dbMap["databaseuser"].data();
-    const char *pass = dbMap["databasepassword"].data();
-    const char *db =dbMap["databasename"].data(); // 数据库名称（已存在）
+    loadDbConfig();
 
     stringstream porttemp(dbMap["databasename"]);
     int port =0;
     porttemp>>port; // 数据库名称（已存在）
-    MYSQL   conn;
-    mysql_init(&conn);
-    mysql_real_connect(&conn, host, user, pass, db, port, 0, 0);
+//    MYSQL   conn;
+    mysql_init(&mysqlconn);
+    mysql_real_connect(&mysqlconn, dbMap["databaseip"].data(), dbMap["databaseuser"].data(), dbMap["databasepassword"].data(), dbMap["databasename"].data(), port, 0, 0);
 
-    return conn;
+    return mysqlconn;
 }
 
 
@@ -70,10 +64,6 @@ bool ConnPool::initConns(int maxConnectSize){
     if(this->dbMap.size()==0){
         this->loadDbConfig();
     }
-    const char *host =dbMap["databaseip"].data();
-    const char *user = dbMap["databaseuser"].data();
-    const char *pass = dbMap["databasepassword"].data();
-    const char *db =dbMap["databasename"].data(); // 数据库名称（已存在）
 
 
     stringstream porttemp(dbMap["databasename"]);
@@ -82,11 +72,11 @@ bool ConnPool::initConns(int maxConnectSize){
     bool succuss=false;
     try {
 
-//        for(int i=0;i<maxConnectSize;i++){
+        //        for(int i=0;i<maxConnectSize;i++){
 
-//            MYSQL conn=  this-> createOneConnect();
-//            connList.push_back(conn);
-//        }
+        //            MYSQL conn=  this-> createOneConnect();
+        //            connList.push_back(conn);
+        //        }
 
         this->successConn=true;
     } catch (...) {
@@ -105,7 +95,7 @@ bool ConnPool::closeConn(){
         //        for(MYSQL conn:this->connList){
         //            mysql_close(&conn);
         //        }
-//        mysql_close(&mysqlconn);
+        //        mysql_close(&mysqlconn);
 
 
         return true;
@@ -116,18 +106,6 @@ bool ConnPool::closeConn(){
 }
 
 
-ConnPool * ConnPool::getInstance(){
-
-    unique_lock<mutex> lock(mutexobj);
-    if(instance==nullptr){
-
-        instance=new ConnPool();
-        lock.unlock();
-    }
-
-
-    return instance;
-}
 
 
 MYSQL ConnPool:: getConnect( ){

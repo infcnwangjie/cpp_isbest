@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class EmployeeDao:protected BaseDao
+class EmployeeDao
 {
 public:
     EmployeeDao(){
@@ -16,15 +16,15 @@ public:
 
 public:
 
-    bool addEmployee(string name,int dept_id,string duty,string gender,string birthdate,string maturedate,string identitycard,
+    string addEmployee(string name,int dept_id,string duty,string gender,string birthdate,string maturedate,string identitycard,
                      string address,string phone,string email
                      );
-    bool deleteEmployee(string name);
-    bool deleteEmployeeById(int id);
-    bool modifyEmployee(int id,string name,int dept_id,string duty,string gender,string birthdate,string maturedate,string identitycard,
+    string deleteEmployee(string name);
+    string deleteEmployeeById(int id);
+    string modifyEmployee(int id,string name,int dept_id,string duty,string gender,string birthdate,string maturedate,string identitycard,
                         string address,string phone,string email);
-    map<string,string> getEmployeeById(int id);
-    list<map<string,string>> selectEmployeess(string name="",int dept_id=0,
+    string getEmployeeById(int id);
+    string selectEmployeess(string name="",int dept_id=0,
                                             int pageSize=3,int currentPage=1);
 
 };

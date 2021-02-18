@@ -9,10 +9,8 @@
 #include<iostream>
 #include <mutex>
 #include <future>
-#include "tinyjson.hpp"
 #include <cassert>
 #include <mainWindow.h>
-using namespace tiny;
 using namespace std;
 
 

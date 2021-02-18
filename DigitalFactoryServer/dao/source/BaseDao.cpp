@@ -1,12 +1,25 @@
 #include "BaseDao.h"
 
 
-MYSQL BaseDao::fetchConn(){
-    connectPool=this->connectPool->getInstance();
+mutex BaseDao::mutexobj;
+//ConnPool * BaseDao::connectPool=nullptr;
+//MYSQL BaseDao::conn;
 
-    MYSQL conn =connectPool->getConnect();
 
-    return conn;
+bool BaseDao::sql_connect(){
+
+
+//    ConnPool connectPool;
+//    connectPool.loadDbConfig();
+     conn = mysql_real_connect(conn,"127.0.0.1","root","root", "jxc", 3306, 0, 0);
+
+//    conn = mysql_real_connect(conn,connectPool.dbMap["databaseip"].data(),connectPool.dbMap["databaseuser"].data(),connectPool.dbMap["databasepassword"].data(), connectPool.dbMap["databasename"].data(), 3306, 0, 0);
+    if(conn ==NULL)
+    {
+        cout<<"mysql_real_connect is failed"<<endl;
+        return false;
+    }
+    return true;
 }
 
 
@@ -17,14 +30,15 @@ bool BaseDao::add(string sql){
 
 
 
-    MYSQL  conn=  fetchConn();
+    //    MYSQL  conn=  fetchConn();
+
 
 
     cout<<sql<<endl;
-    mysql_query(&conn, "set names utf8");
-    if(mysql_query(&conn, sql.data()))        //执行SQL语句
+    mysql_query(conn, "set names utf8");
+    if(mysql_query(conn, sql.data()))        //执行SQL语句
     {
-        printf("insert failed (%s)\n",mysql_error(&conn));
+        printf("insert failed (%s)\n",mysql_error(conn));
         return false;
     }
     else
@@ -39,7 +53,7 @@ bool BaseDao::add(string sql){
 bool BaseDao::deleteDatas(string sql){
 
 
-    MYSQL  conn=fetchConn();
+    //    MYSQL  conn=fetchConn();
 
 
 
@@ -47,9 +61,9 @@ bool BaseDao::deleteDatas(string sql){
 
     cout<<sql<<endl;
 
-    if(mysql_query(&conn, sql.data()))        //执行SQL语句
+    if(mysql_query(conn, sql.data()))        //执行SQL语句
     {
-        printf("delete user failed (%s)\n",mysql_error(&conn));
+        printf("delete user failed (%s)\n",mysql_error(conn));
         return false;
     }
     else
@@ -67,16 +81,16 @@ bool BaseDao::deleteDatas(string sql){
 bool BaseDao::modify(string sql){
 
 
-    MYSQL   conn=  fetchConn();
+    //    MYSQL   conn=  fetchConn();
 
 
 
     cout<<sql<<endl;
-    mysql_query(&conn, "set names utf8");
+    mysql_query(conn, "set names utf8");
 
-    if(mysql_query(&conn, sql.data()))        //执行SQL语句
+    if(mysql_query(conn, sql.data()))        //执行SQL语句
     {
-        printf("modify user failed (%s)\n",mysql_error(&conn));
+        printf("modify user failed (%s)\n",mysql_error(conn));
         return false;
     }
     else
@@ -94,21 +108,21 @@ map<string,string> BaseDao:: getOne(string sql){
     map<string,string> data;
 
 
-    MYSQL  conn=fetchConn();
+    //    MYSQL  conn=fetchConn();
 
 
 
 
     cout<<sql<<endl;
 
-    mysql_query(&conn, "set names utf8");
+    mysql_query(conn, "set names utf8");
 
-    if (0 == mysql_query(&conn, sql.data()))
+    if (0 == mysql_query(conn, sql.data()))
     {
 
         MYSQL_RES *result = nullptr;
 
-        result = mysql_store_result(&conn); //获得sql语句结束后返回的结果集
+        result = mysql_store_result(conn); //获得sql语句结束后返回的结果集
         unsigned int rows = (unsigned int)mysql_num_rows(result);
 
         if(rows==0)return data;
@@ -167,21 +181,17 @@ list<map<string,string>> BaseDao::query(string sql){
     list<map<string,string>> datas;
 
 
-    MYSQL conn=fetchConn();
-
-
-
-
+    //    MYSQL conn=fetchConn();
     cout<<sql<<endl;
 
-    mysql_query(&conn, "set names utf8");
+    mysql_query(conn, "set names utf8");
 
-    if (0 == mysql_query(&conn, sql.data()))
+    if (0 == mysql_query(conn, sql.data()))
     {
 
         MYSQL_RES *result = nullptr;
 
-        result = mysql_store_result(&conn); //获得sql语句结束后返回的结果集
+        result = mysql_store_result(conn); //获得sql语句结束后返回的结果集
         unsigned int rows = (unsigned int)mysql_num_rows(result);
 
         if(rows==0)return datas;
@@ -223,7 +233,7 @@ list<map<string,string>> BaseDao::query(string sql){
     else
     {
         cout << "no find user" << \
-                mysql_error(&conn) << endl;
+                mysql_error(conn) << endl;
         //         mysql_close(&conn);
         //        return false;
 

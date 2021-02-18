@@ -3,7 +3,7 @@
 
 
 
-bool ProductDao::addProduct(int productList_id,string name,int productspec_id,int productunit_id,float price,int employee_id,string preatedate,string remark){
+string ProductDao::addProduct(int productList_id,string name,int productspec_id,int productunit_id,float price,int employee_id,string preatedate,string remark){
 
 
     stringstream sqlBuilder;
@@ -12,11 +12,11 @@ bool ProductDao::addProduct(int productList_id,string name,int productspec_id,in
             <<remark<<"')";
 
     string sql=sqlBuilder.str();
-    return add(sql);
+ return sql;
 }
 
 
-bool ProductDao::deleteProduct(string name){
+string ProductDao::deleteProduct(string name){
 
 
     stringstream sqlBuilder;
@@ -24,21 +24,21 @@ bool ProductDao::deleteProduct(string name){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+ return sql;
 
 
 }
-bool ProductDao::deleteProductById(int id){
+string ProductDao::deleteProductById(int id){
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  product where id="<<id;
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+ return sql;
 
 }
-bool ProductDao::modifyProduct(int id,int productList_id,string name,int productspec_id,int productunit_id,float price,int employee_id,string preatedate,string remark){
+string ProductDao::modifyProduct(int id,int productList_id,string name,int productspec_id,int productunit_id,float price,int employee_id,string preatedate,string remark){
 
 
     stringstream sqlBuilder;
@@ -47,23 +47,21 @@ bool ProductDao::modifyProduct(int id,int productList_id,string name,int product
              <<" where id="<<id;
 
     string sql=sqlBuilder.str();
-
-    return modify(sql);
+ return sql;
 
 }
-map<string,string> ProductDao::getProductById(int id){
+string ProductDao::getProductById(int id){
 
 
     stringstream sqlBuilder;
     sqlBuilder<<"select * from product  where id="<<id;
     string sql=sqlBuilder.str();
 
-    map<string,string> deptInfo;
-    return getOne(sql);
+ return sql;
 
 
 }
-list<map<string,string>> ProductDao::selectProducts(string name,string remark,
+string ProductDao::selectProducts(string name,string remark,
                                                     int pageSize,int currentPage){
     stringstream sqlBuilder;
     sqlBuilder<<"select * from product";
@@ -79,8 +77,7 @@ list<map<string,string>> ProductDao::selectProducts(string name,string remark,
 
     sqlBuilder<<" limit "<<(currentPage-1)*pageSize<<","<<pageSize;
     string sql=sqlBuilder.str();
-    list<map<string,string>> deptInfos;
-    return query(sql);
+   return sql;
 
 
 }

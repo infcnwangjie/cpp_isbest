@@ -1,7 +1,7 @@
 #include "DeptDao.h"
 
 
-bool DeptDao::addDept(string name, string remark){
+string DeptDao::addDept(string name, string remark){
 
 
     stringstream sqlBuilder;
@@ -9,11 +9,11 @@ bool DeptDao::addDept(string name, string remark){
              <<remark<<"')";
 
     string sql=sqlBuilder.str();
-    return add(sql);
+    return sql;
 }
 
 
-bool DeptDao::deleteDept(string name){
+string DeptDao::deleteDept(string name){
 
 
     stringstream sqlBuilder;
@@ -21,21 +21,20 @@ bool DeptDao::deleteDept(string name){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
-
+    return sql;
 
 }
-bool DeptDao::deleteDeptById(int id){
+string DeptDao::deleteDeptById(int id){
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  dept where id="<<id;
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 }
-bool DeptDao::modifyDept(int id, string name, string remark){
+string DeptDao::modifyDept(int id, string name, string remark){
 
 
     stringstream sqlBuilder;
@@ -44,10 +43,10 @@ bool DeptDao::modifyDept(int id, string name, string remark){
 
     string sql=sqlBuilder.str();
 
-    return modify(sql);
+    return sql;
 
 }
-map<string,string> DeptDao::getDeptById(int id){
+string DeptDao::getDeptById(int id){
 
 
     stringstream sqlBuilder;
@@ -55,12 +54,12 @@ map<string,string> DeptDao::getDeptById(int id){
     string sql=sqlBuilder.str();
 
     map<string,string> deptInfo;
-    return getOne(sql);
+    return sql;
 
 
 }
-list<map<string,string>> DeptDao::selectDepts(string name,string remark,
-                                              int pageSize,int currentPage){
+string DeptDao::selectDepts(string name,string remark,
+                            int pageSize,int currentPage){
     stringstream sqlBuilder;
     sqlBuilder<<"select * from dept";
     if(name!="" or remark!="" ){
@@ -76,7 +75,7 @@ list<map<string,string>> DeptDao::selectDepts(string name,string remark,
     sqlBuilder<<" limit "<<(currentPage-1)*pageSize<<","<<pageSize;
     string sql=sqlBuilder.str();
     list<map<string,string>> deptInfos;
-    return query(sql);
+    return sql;
 
 
 }

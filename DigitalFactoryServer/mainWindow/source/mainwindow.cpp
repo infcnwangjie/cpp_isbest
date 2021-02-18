@@ -1,11 +1,15 @@
 #include "mainwindow.h"
 //#include "./ui_mainwindow.h"
 #include<mainwindowui.h>
-#include <UserDao.h>
+#include <UserService.h>
 #include "tinyjson.hpp"
-#include <cassert>
+//#include <cassert>
 using namespace std;
 using namespace tiny;
+
+
+//extern std::string myint_to_string(int data);
+//extern int mystring_to_int(std::string data);
 
 string  processhandle(string  jsonInfo){
     //    unique_lock<mutex> lock(mutexobj);
@@ -13,32 +17,27 @@ string  processhandle(string  jsonInfo){
     json.ReadJson(jsonInfo);
     qDebug()<<QString::fromStdString(jsonInfo);
     string method=json.Get<string>("method");
-    TinyJson loginJson;
+
     if(method=="login"){
 
         xobject data = json.Get<xobject>("data");
         if(data.Count()==0){
-            loginJson["loginstatus"].Set("false");
+           return "";
         }else{
             data.Enter(0);
             string user = data.Get<string>("user");
             string password = data.Get<string>("password");
-            UserDao userDao;
-            bool success=userDao.login(user,password,"");
-            qDebug()<<QString::fromStdString(jsonInfo);
-            if(success){
-                qDebug()<<"login";
-                loginJson["loginstatus"].Set("ok");
-            }
-            else
-                loginJson["loginstatus"].Set("false");
+            UserService userService;
+            string  result=userService.login(jsonInfo);
+          return result;
+
 
         }
 
-        string jsonstr = loginJson.WriteJson();
-        //        lock.unlock();
-        return jsonstr;
+
+
     }
+    return "";
 }
 
 
@@ -57,8 +56,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-
 
 void MainWindow::initServerSocket(){
     TCP_server = new QTcpServer(this);

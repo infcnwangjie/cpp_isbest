@@ -3,7 +3,7 @@
 
 
 
-bool ProductuNnitDao::addUnit(string name, int employee_id, string createdate, string remark){
+string ProductuNnitDao::addUnit(string name, int employee_id, string createdate, string remark){
 
 
     stringstream sqlBuilder;
@@ -12,11 +12,11 @@ bool ProductuNnitDao::addUnit(string name, int employee_id, string createdate, s
             <<remark<<"')";
 
     string sql=sqlBuilder.str();
-    return add(sql);
+    return sql;
 }
 
 
-bool ProductuNnitDao::deleteUnit(string name){
+string ProductuNnitDao::deleteUnit(string name){
 
 
     stringstream sqlBuilder;
@@ -24,21 +24,21 @@ bool ProductuNnitDao::deleteUnit(string name){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 
 }
-bool ProductuNnitDao::deleteUnitById(int id){
+string ProductuNnitDao::deleteUnitById(int id){
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  productunit where id="<<id;
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 }
-bool ProductuNnitDao::modifyUnit(int id, string name, int employee_id, string createdate, string remark){
+string ProductuNnitDao::modifyUnit(int id, string name, int employee_id, string createdate, string remark){
 
 
     stringstream sqlBuilder;
@@ -47,10 +47,10 @@ bool ProductuNnitDao::modifyUnit(int id, string name, int employee_id, string cr
 
     string sql=sqlBuilder.str();
 
-    return modify(sql);
+    return sql;
 
 }
-map<string,string> ProductuNnitDao::getUnitById(int id){
+string ProductuNnitDao::getUnitById(int id){
 
 
     stringstream sqlBuilder;
@@ -58,12 +58,12 @@ map<string,string> ProductuNnitDao::getUnitById(int id){
     string sql=sqlBuilder.str();
 
     map<string,string> deptInfo;
-    return getOne(sql);
+    return sql;
 
 
 }
-list<map<string,string>> ProductuNnitDao::selectUnits(string name,string remark,
-                                                    int pageSize,int currentPage){
+string ProductuNnitDao::selectUnits(string name,string remark,
+                                    int pageSize,int currentPage){
     stringstream sqlBuilder;
     sqlBuilder<<"select * from productunit";
     if(name!="" or remark!="" ){
@@ -79,7 +79,7 @@ list<map<string,string>> ProductuNnitDao::selectUnits(string name,string remark,
     sqlBuilder<<" limit "<<(currentPage-1)*pageSize<<","<<pageSize;
     string sql=sqlBuilder.str();
     list<map<string,string>> deptInfos;
-    return query(sql);
+    return sql;
 
 
 }

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class DeptDao:protected BaseDao
+class DeptDao
 {
 public:
     DeptDao(){
@@ -16,12 +16,12 @@ public:
 
 public:
 
-    bool addDept(string name,string remark);
-    bool deleteDept(string name);
-    bool deleteDeptById(int id);
-    bool modifyDept(int id,string name,string remark);
-    map<string,string> getDeptById(int id);
-    list<map<string,string>> selectDepts(string name="",string remark="",
+    string  addDept(string name,string remark);
+    string deleteDept(string name);
+    string deleteDeptById(int id);
+    string modifyDept(int id,string name,string remark);
+    string getDeptById(int id);
+    string selectDepts(string name="",string remark="",
                                          int pageSize=3,int currentPage=1);
 
 

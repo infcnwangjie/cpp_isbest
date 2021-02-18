@@ -10,15 +10,17 @@ class  BaseDao{
 
 public:
     BaseDao(){
+        conn=mysql_init((MYSQL*) 0);
 
+//                fetchConn();
     }
     ~BaseDao(){
-//        delete connectPool;
+       mysql_close(conn);
     }
 
 
 public:
-    virtual MYSQL  fetchConn();
+    bool  sql_connect();
 
     bool add(string sql);
     bool deleteDatas(string sql);
@@ -26,8 +28,12 @@ public:
     map<string,string> getOne(string sql);
     list<map<string,string>> query(string sql);
 
-protected:
-    ConnPool  * connectPool;
+    static mutex mutexobj;
+    MYSQL * conn;
+//    static ConnPool  * connectPool;
+
+
+
 };
 
 #endif // LOGINDAO_H

@@ -100,7 +100,7 @@ void LoginWindow::onlogin(){
 
 
     string str = loginJson.WriteJson();
-    cout << "json string: \r\n" << endl;
+
     qDebug() << QString::fromStdString(str) << endl;
 
 
@@ -150,9 +150,12 @@ void LoginWindow::fetchLoginMessageFromServer(){
         TinyJson json;
         json.ReadJson(jsonInfo.toStdString());
 
-        string loginstatus=json.Get<string>("loginstatus");
+        string loginstatus=json.Get<string>("authorized");
+        string name=json.Get<string>("name");
+        string password=json.Get<string>("password");
 
-        if(loginstatus=="ok"){
+
+        if(loginstatus=="true"){
             this->m_pTcpSocket->close();
 //            delete this->m_pTcpSocket;
 

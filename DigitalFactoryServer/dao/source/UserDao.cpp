@@ -2,21 +2,20 @@
 
 
 
-bool UserDao::login(string user,string password,string registcode){
+string UserDao::login(string user,string password,string registcode){
 
     stringstream sqlBuilder;
     sqlBuilder<<"select * from user  where name='"<<user<<"' and password= '"<<password<<"'";
 
     string sql=sqlBuilder.str();
 
-    map<string,string> userInfo=getOne(sql);
-    if (userInfo.size()==0) return false;
 
-    return true;
+
+return sql;
 }
 
 
-bool UserDao::addUser(string name,string email,int staffposition_id,int role_id,int depart_id,string remark,string password){
+string UserDao::addUser(string name,string email,int staffposition_id,int role_id,int depart_id,string remark,string password){
 
 
     stringstream sqlBuilder;
@@ -25,10 +24,10 @@ bool UserDao::addUser(string name,string email,int staffposition_id,int role_id,
 
     string sql=sqlBuilder.str();
 
-    return add(sql);
+return sql;
 }
 
-bool UserDao::deleteUser(string name,string password){
+string UserDao::deleteUser(string name,string password){
 
 
 
@@ -39,14 +38,13 @@ bool UserDao::deleteUser(string name,string password){
 
     cout<<sql<<endl;
 
-    return deleteDatas(sql);
-
+   return sql;
 
 
 
 }
 
-bool UserDao::deleteUserById(int id){
+string UserDao::deleteUserById(int id){
 
 
     stringstream sqlBuilder;
@@ -54,10 +52,10 @@ bool UserDao::deleteUserById(int id){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+   return sql;
 }
 
-bool UserDao::modifyUser(int id,string name,string email,int staffposition_id,int role_id,int depart_id,string remark,string password){
+string UserDao::modifyUser(int id,string name,string email,int staffposition_id,int role_id,int depart_id,string remark,string password){
 
 
     stringstream sqlBuilder;
@@ -67,11 +65,11 @@ bool UserDao::modifyUser(int id,string name,string email,int staffposition_id,in
 
     string sql=sqlBuilder.str();
 
-    return modify(sql);
+   return sql;
 }
 
 
-map<string,string> UserDao:: getUserById(int id){
+string UserDao:: getUserById(int id){
 
 
 
@@ -83,10 +81,10 @@ map<string,string> UserDao:: getUserById(int id){
 
     string sql=sqlBuilder.str();
 
-    return getOne(sql);
+   return sql;
 
 }
-list<map<string,string>> UserDao::selectUsers(string name,string email,int staffposition_id,int role_id,int depart_id,string password,\
+string UserDao::selectUsers(string name,string email,int staffposition_id,int role_id,int depart_id,string password,\
                                               int pageSize,int currentPage){
 
 
@@ -97,29 +95,47 @@ list<map<string,string>> UserDao::selectUsers(string name,string email,int staff
 
     stringstream sqlBuilder;
     sqlBuilder<<"select * from user";
-    if(name!="" or email!="" or password!="" or  role_id !=0 or depart_id!=0){
+    if(name!="" || email!="" || password!="" ||  role_id !=0 || depart_id!=0){
         sqlBuilder<<" where ";
         if(name!=""){
-            sqlBuilder<<"  name='"<<name<<"'";
+            sqlBuilder<<"  name='"<<name;
+
+            if(email!="" || password!="" ||  role_id !=0 || depart_id!=0||staffposition_id!=0){
+                sqlBuilder<<"' and ";
+            }
+
         }
 
         if(email!=""){
-            sqlBuilder<<"  email='"<<email<<"'";
+            sqlBuilder<<"  email='"<<email;
+            if( password!="" ||  role_id !=0 || depart_id!=0 ||staffposition_id!=0){
+                sqlBuilder<<"' and ";
+            }
         }
 
         if(password!=""){
             sqlBuilder<<"  password='"<<password<<"'";
+            if(   role_id !=0 || depart_id!=0 ||staffposition_id!=0){
+                sqlBuilder<<" and ";
+            }
         }
 
         if(staffposition_id!=0){
-            sqlBuilder<<" staff_positionid="<<staffposition_id<<"";
+            sqlBuilder<<" staff_positionid="<<staffposition_id;
+            if(   role_id !=0 || depart_id!=0){
+                sqlBuilder<<"' and ";
+            }
         }
         if(role_id!=0){
-            sqlBuilder<<" role_id="<<role_id<<"";
+            sqlBuilder<<" role_id="<<role_id;
+            if(  depart_id!=0){
+                sqlBuilder<<"' and ";
+            }
         }
 
         if(depart_id!=0){
-            sqlBuilder<<" depart_id="<<depart_id<<"";
+            sqlBuilder<<" depart_id="<<depart_id;
+
         }
     }
 
@@ -127,6 +143,6 @@ list<map<string,string>> UserDao::selectUsers(string name,string email,int staff
 
     string sql=sqlBuilder.str();
 
-    return query(sql);
+    return sql;
 
 }

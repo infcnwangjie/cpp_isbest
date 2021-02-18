@@ -3,7 +3,7 @@
 
 
 
-bool ProductSpecDao::addSpec(string name, int employee_id, string createdate, string remark){
+string ProductSpecDao::addSpec(string name, int employee_id, string createdate, string remark){
 
 
     stringstream sqlBuilder;
@@ -11,11 +11,11 @@ bool ProductSpecDao::addSpec(string name, int employee_id, string createdate, st
              <<createdate<<"','"<<remark<<"')";
 
     string sql=sqlBuilder.str();
-    return add(sql);
+    return sql;
 }
 
 
-bool ProductSpecDao::deleteSpec(string name){
+string ProductSpecDao::deleteSpec(string name){
 
 
     stringstream sqlBuilder;
@@ -23,21 +23,21 @@ bool ProductSpecDao::deleteSpec(string name){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 
 }
-bool ProductSpecDao::deleteSpecById(int id){
+string ProductSpecDao::deleteSpecById(int id){
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  productspec where id="<<id;
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 }
-bool ProductSpecDao::modifySpec(int id, string name, int employee_id, string createdate, string remark){
+string ProductSpecDao::modifySpec(int id, string name, int employee_id, string createdate, string remark){
 
 
     stringstream sqlBuilder;
@@ -46,23 +46,22 @@ bool ProductSpecDao::modifySpec(int id, string name, int employee_id, string cre
 
     string sql=sqlBuilder.str();
 
-    return modify(sql);
+    return sql;
 
 }
-map<string,string> ProductSpecDao::getSpecById(int id){
+string ProductSpecDao::getSpecById(int id){
 
 
     stringstream sqlBuilder;
     sqlBuilder<<"select * from productspec  where id="<<id;
     string sql=sqlBuilder.str();
 
-    map<string,string> deptInfo;
-    return getOne(sql);
+    return sql;
 
 
 }
-list<map<string,string>> ProductSpecDao::selectSpecs(string name,string remark,
-                                                    int pageSize,int currentPage){
+string ProductSpecDao::selectSpecs(string name,string remark,
+                                   int pageSize,int currentPage){
     stringstream sqlBuilder;
     sqlBuilder<<"select * from productspec";
     if(name!="" or remark!="" ){
@@ -78,7 +77,7 @@ list<map<string,string>> ProductSpecDao::selectSpecs(string name,string remark,
     sqlBuilder<<" limit "<<(currentPage-1)*pageSize<<","<<pageSize;
     string sql=sqlBuilder.str();
     list<map<string,string>> deptInfos;
-    return query(sql);
+    return sql;
 
 
 }

@@ -3,9 +3,9 @@
 
 
 
-bool EmployeeDao::addEmployee(string name, int dept_id, string duty, string gender, string birthdate, string maturedate,
-                              string identitycard, string address,
-                              string phone, string email){
+string EmployeeDao::addEmployee(string name, int dept_id, string duty, string gender, string birthdate, string maturedate,
+                                string identitycard, string address,
+                                string phone, string email){
 
 
     stringstream sqlBuilder;
@@ -14,11 +14,11 @@ bool EmployeeDao::addEmployee(string name, int dept_id, string duty, string gend
             <<identitycard<<"','"<<address<<"','"<<phone<<"','"<<email<<"')";
 
     string sql=sqlBuilder.str();
-    return add(sql);
+    return sql;
 }
 
 
-bool EmployeeDao::deleteEmployee(string name){
+string EmployeeDao::deleteEmployee(string name){
 
 
     stringstream sqlBuilder;
@@ -26,49 +26,47 @@ bool EmployeeDao::deleteEmployee(string name){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 
 }
-bool EmployeeDao::deleteEmployeeById(int id){
+string EmployeeDao::deleteEmployeeById(int id){
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  employee where id="<<id;
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
-
+    return sql;
 }
-bool EmployeeDao::modifyEmployee(int id, string name, int dept_id, string duty, string gender, string birthdate, string maturedate,
-                                 string identitycard, string address, string phone, string email){
+string EmployeeDao::modifyEmployee(int id, string name, int dept_id, string duty, string gender, string birthdate, string maturedate,
+                                   string identitycard, string address, string phone, string email){
 
 
     stringstream sqlBuilder;
     sqlBuilder<<"update employee set name= '"<<name<<"', dept_id="<<dept_id<<",duty='"<<duty<<"',gender='"<<gender
              <<"',birthdate='"<<birthdate<<"',maturedate='"<<maturedate<<"',identitycard='"<<identitycard<<"',address='"
             <<address<<"',phone='"<<phone<<"',email='"<<email
-             <<"' where id="<<id;
+           <<"' where id="<<id;
 
     string sql=sqlBuilder.str();
-
-    return modify(sql);
+    return sql;
 
 }
-map<string,string> EmployeeDao::getEmployeeById(int id){
+string EmployeeDao::getEmployeeById(int id){
 
 
     stringstream sqlBuilder;
     sqlBuilder<<"select * from employee  where id="<<id;
     string sql=sqlBuilder.str();
 
-    map<string,string> deptInfo;
-    return getOne(sql);
+
+    return sql;
 
 
 }
-list<map<string,string>> EmployeeDao::selectEmployeess(string name,int dept_id,
-                                                    int pageSize,int currentPage){
+string EmployeeDao::selectEmployeess(string name,int dept_id,
+                                     int pageSize,int currentPage){
     stringstream sqlBuilder;
     sqlBuilder<<"select * from employee";
     if(name!="" or dept_id!=0){
@@ -83,8 +81,8 @@ list<map<string,string>> EmployeeDao::selectEmployeess(string name,int dept_id,
 
     sqlBuilder<<" limit "<<(currentPage-1)*pageSize<<","<<pageSize;
     string sql=sqlBuilder.str();
-    list<map<string,string>> deptInfos;
-    return query(sql);
+
+    return sql;
 
 
 }

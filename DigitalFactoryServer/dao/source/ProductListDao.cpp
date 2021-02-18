@@ -3,7 +3,7 @@
 
 
 
-bool ProductListDao::addList(int productclass_id, string name, int employee_id, string createdate, string remark){
+string ProductListDao::addList(int productclass_id, string name, int employee_id, string createdate, string remark){
 
 
     stringstream sqlBuilder;
@@ -11,11 +11,11 @@ bool ProductListDao::addList(int productclass_id, string name, int employee_id, 
              <<employee_id<<",'"<<createdate<<"','"<<remark<<"')";
 
     string sql=sqlBuilder.str();
-    return add(sql);
+    return sql;
 }
 
 
-bool ProductListDao::deleteList(string name){
+string ProductListDao::deleteList(string name){
 
 
     stringstream sqlBuilder;
@@ -23,34 +23,34 @@ bool ProductListDao::deleteList(string name){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 
 }
-bool ProductListDao::deleteListById(int id){
+string ProductListDao::deleteListById(int id){
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  productlist where id="<<id;
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 }
-bool ProductListDao::modifyList(int id, int productclass_id, string name, int employee_id, string createdate, string remark){
+string ProductListDao::modifyList(int id, int productclass_id, string name, int employee_id, string createdate, string remark){
 
 
     stringstream sqlBuilder;
     sqlBuilder<<"update productlist set productclass_id="<<productclass_id<<", name='"<<name<<"',employee_id="<<employee_id<<",createdate='"<<createdate<<"',remark='"
-            <<remark <<"' where id="<<id;
+             <<remark <<"' where id="<<id;
 
 
     string sql=sqlBuilder.str();
 
-    return modify(sql);
+    return sql;
 
 }
-map<string,string> ProductListDao::getListById(int id){
+string ProductListDao::getListById(int id){
 
 
     stringstream sqlBuilder;
@@ -58,12 +58,12 @@ map<string,string> ProductListDao::getListById(int id){
     string sql=sqlBuilder.str();
 
     map<string,string> deptInfo;
-    return getOne(sql);
+    return sql;
 
 
 }
-list<map<string,string>> ProductListDao::selectLists(string name,string remark,
-                                                    int pageSize,int currentPage){
+string ProductListDao::selectLists(string name,string remark,
+                                   int pageSize,int currentPage){
     stringstream sqlBuilder;
     sqlBuilder<<"select * from productlist";
     if(name!="" or remark!="" ){
@@ -79,7 +79,7 @@ list<map<string,string>> ProductListDao::selectLists(string name,string remark,
     sqlBuilder<<" limit "<<(currentPage-1)*pageSize<<","<<pageSize;
     string sql=sqlBuilder.str();
     list<map<string,string>> deptInfos;
-    return query(sql);
+    return sql;
 
 
 }

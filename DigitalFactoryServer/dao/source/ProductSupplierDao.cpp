@@ -2,7 +2,7 @@
 
 
 
-bool ProductSupplierDao::addProductSupplier(int product_id, int supplier_id){
+string ProductSupplierDao::addProductSupplier(int product_id, int supplier_id){
 
 
     stringstream sqlBuilder;
@@ -10,11 +10,11 @@ bool ProductSupplierDao::addProductSupplier(int product_id, int supplier_id){
              <<supplier_id<<")";
 
     string sql=sqlBuilder.str();
-    return add(sql);
+    return sql;
 }
 
 
-bool ProductSupplierDao::deleteProductSupplier(int product_id, int supplier_id){
+string ProductSupplierDao::deleteProductSupplier(int product_id, int supplier_id){
 
 
     stringstream sqlBuilder;
@@ -22,12 +22,12 @@ bool ProductSupplierDao::deleteProductSupplier(int product_id, int supplier_id){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 
 }
 
-map<string,string> ProductSupplierDao::getProductSupplier(int product_id, int supplier_id){
+string ProductSupplierDao::getProductSupplier(int product_id, int supplier_id){
 
 
     stringstream sqlBuilder;
@@ -35,12 +35,12 @@ map<string,string> ProductSupplierDao::getProductSupplier(int product_id, int su
     string sql=sqlBuilder.str();
 
     map<string,string> deptInfo;
-    return getOne(sql);
+    return sql;
 
 
 }
-list<map<string,string>> ProductSupplierDao::selectProductSuppliers(int product_id,int supplier_id,
-                                              int pageSize,int currentPage){
+string ProductSupplierDao::selectProductSuppliers(int product_id,int supplier_id,
+                                                  int pageSize,int currentPage){
     stringstream sqlBuilder;
     sqlBuilder<<"select * from product_supplier";
     if(product_id!=0 or supplier_id!=0 ){
@@ -56,7 +56,7 @@ list<map<string,string>> ProductSupplierDao::selectProductSuppliers(int product_
     sqlBuilder<<" limit "<<(currentPage-1)*pageSize<<","<<pageSize;
     string sql=sqlBuilder.str();
     list<map<string,string>> deptInfos;
-    return query(sql);
+    return sql;
 
 
 }

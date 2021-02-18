@@ -1,11 +1,16 @@
 #ifndef USER_SERVICE_H
 #define USER_SERVICE_H
-#include "UserDao.h"
+
+
 #include <map>
 #include<list>
-#include "tinyjson.hpp"
 
-using namespace tiny;
+
+#include "UserDao.h"
+#include "UserRoleDao.h"
+#include "RoleMenuDao.h"
+
+
 using namespace std;
 
 class  UserService{
@@ -13,6 +18,7 @@ class  UserService{
 public:
     UserService():userDao(new UserDao()){
 
+        dao=new BaseDao();
     }
     ~UserService(){
         if(userDao!=nullptr){
@@ -22,11 +28,13 @@ public:
 
 private:
     UserDao * userDao;
-
+    UserRoleDao *userRoleDao;
+    RoleMenuDao *roleMenuDao;
+    BaseDao * dao;
 
 public:
 
-    bool login(string jsonstr);
+    string login(string jsonstr);
     bool addUser(string jsonstr);
     bool deleteUser(string jsonstr);
     bool deleteUserById(string jsonstr);

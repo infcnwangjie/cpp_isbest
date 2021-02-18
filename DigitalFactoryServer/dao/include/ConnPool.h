@@ -32,8 +32,9 @@ public:
 
     bool closeConn();
 
-    static ConnPool * getInstance();
+    static ConnPool getInstance();
     MYSQL  getConnect();
+    friend class BaseDao;
 
 
 
@@ -42,7 +43,6 @@ protected:
 //    list<MYSQL> connList;
     MYSQL mysqlconn;
     bool successConn=false;
-    static  ConnPool * instance;
 
     static mutex mutexobj;
 };

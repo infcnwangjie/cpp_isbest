@@ -1,7 +1,7 @@
 #include "MenuDao.h"
 
 
-bool MenuDao::addMenu(string menuname,string url,string icon,int pid,int is_parent){
+string MenuDao::addMenu(string menuname,string url,string icon,int pid,int is_parent){
 
     stringstream sqlBuilder;
     sqlBuilder<<"insert into menu(menuname,url,icon,pid,is_parent) values"<<"('"<<menuname<<"','"
@@ -9,28 +9,28 @@ bool MenuDao::addMenu(string menuname,string url,string icon,int pid,int is_pare
 
     string sql=sqlBuilder.str();
 
-    return add(sql);
+    return sql;
 }
 
-bool MenuDao::deleteMenu(string menuname){
+string MenuDao::deleteMenu(string menuname){
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  menu where name='"<<menuname<<"'";
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+     return sql;
 
 }
-bool MenuDao::deleteMenuById(int id){
+string MenuDao::deleteMenuById(int id){
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  menu where id="<<id;
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+     return sql;
 }
-bool MenuDao::modifyMenu(int id,string menuname,string url,string icon,int pid,int is_parent){
+string MenuDao::modifyMenu(int id,string menuname,string url,string icon,int pid,int is_parent){
 
 
     stringstream sqlBuilder;
@@ -39,9 +39,9 @@ bool MenuDao::modifyMenu(int id,string menuname,string url,string icon,int pid,i
 
     string sql=sqlBuilder.str();
 
-    return modify(sql);
+    return sql;
 }
-map<string,string> MenuDao::getMenuById(int id){
+string MenuDao::getMenuById(int id){
     map<string,string> menuInfo;
 
 
@@ -50,9 +50,9 @@ map<string,string> MenuDao::getMenuById(int id){
 
     string sql=sqlBuilder.str();
 
-    return getOne(sql);
+    return sql;
 }
-list<map<string,string>> MenuDao::selectMenus(string menuname,string url,
+string MenuDao::selectMenus(string menuname,string url,
                                               int pageSize,int currentPage){
     list<map<string,string>> menuInfos;
 
@@ -77,7 +77,7 @@ list<map<string,string>> MenuDao::selectMenus(string menuname,string url,
 
     cout<<sql<<endl;
 
-    return query(sql);
+ return sql;
 }
 
 

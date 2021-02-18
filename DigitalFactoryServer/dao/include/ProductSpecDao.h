@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class ProductSpecDao:protected BaseDao
+class ProductSpecDao
 {
 public:
     ProductSpecDao(){
@@ -16,13 +16,13 @@ public:
 
 public:
 
-    bool addSpec(string name,int employee_id,string createdate,string remark);
-    bool deleteSpec(string name);
-    bool deleteSpecById(int id);
-    bool modifySpec(int id,string name,int employee_id,string createdate,string remark);
-    map<string,string> getSpecById(int id);
-    list<map<string,string>> selectSpecs(string name="",string remark="",
-                                            int pageSize=3,int currentPage=1);
+    string addSpec(string name,int employee_id,string createdate,string remark);
+    string deleteSpec(string name);
+    string deleteSpecById(int id);
+    string modifySpec(int id,string name,int employee_id,string createdate,string remark);
+    string getSpecById(int id);
+    string selectSpecs(string name="",string remark="",
+                       int pageSize=3,int currentPage=1);
 
 };
 

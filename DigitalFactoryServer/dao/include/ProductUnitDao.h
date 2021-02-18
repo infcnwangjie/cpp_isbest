@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class ProductuNnitDao:protected BaseDao
+class ProductuNnitDao
 {
 public:
     ProductuNnitDao(){
@@ -16,13 +16,13 @@ public:
 
 public:
 
-    bool addUnit(string name,int employee_id,string createdate,string remark);
-    bool deleteUnit(string name);
-    bool deleteUnitById(int id);
-    bool modifyUnit(int id,string name,int employee_id,string createdate,string remark);
-    map<string,string> getUnitById(int id);
-    list<map<string,string>> selectUnits(string name="",string remark="",
-                                            int pageSize=3,int currentPage=1);
+    string addUnit(string name,int employee_id,string createdate,string remark);
+    string deleteUnit(string name);
+    string deleteUnitById(int id);
+    string modifyUnit(int id,string name,int employee_id,string createdate,string remark);
+    string getUnitById(int id);
+    string selectUnits(string name="",string remark="",
+                       int pageSize=3,int currentPage=1);
 
 };
 

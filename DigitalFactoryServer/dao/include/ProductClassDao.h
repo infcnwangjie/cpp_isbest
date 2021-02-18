@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class ProductClassDao:protected BaseDao
+class ProductClassDao
 {
 public:
     ProductClassDao(){
@@ -16,12 +16,12 @@ public:
 
 public:
 
-    bool addClass(string name,int employee_id,string createdate,string remark);
-    bool deleteClass(string name);
-    bool deleteClassById(int id);
-    bool modifyClass(int id,string name,int employee_id,string createdate,string remark);
-    map<string,string> getClassById(int id);
-    list<map<string,string>> selectClasses(string name="",int employee_id=0,string remark="",
+    string addClass(string name,int employee_id,string createdate,string remark);
+    string deleteClass(string name);
+    string deleteClassById(int id);
+    string modifyClass(int id,string name,int employee_id,string createdate,string remark);
+    string getClassById(int id);
+    string selectClasses(string name="",int employee_id=0,string remark="",
                                             int pageSize=3,int currentPage=1);
 
 };

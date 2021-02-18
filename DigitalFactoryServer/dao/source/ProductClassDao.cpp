@@ -3,7 +3,7 @@
 
 
 
-bool ProductClassDao::addClass(string name, int employee_id, string createdate, string remark){
+string ProductClassDao::addClass(string name, int employee_id, string createdate, string remark){
 
     stringstream sqlBuilder;
     sqlBuilder<<"insert into productclass(name,employee_id,createdate,remark) values"<<"('"<<name<<"',"<<employee_id<<",'"
@@ -11,11 +11,11 @@ bool ProductClassDao::addClass(string name, int employee_id, string createdate, 
             <<remark<<"')";
 
     string sql=sqlBuilder.str();
-    return add(sql);
+    return sql;
 }
 
 
-bool ProductClassDao::deleteClass(string name){
+string ProductClassDao::deleteClass(string name){
 
 
     stringstream sqlBuilder;
@@ -23,21 +23,20 @@ bool ProductClassDao::deleteClass(string name){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 
 }
-bool ProductClassDao::deleteClassById(int id){
+string ProductClassDao::deleteClassById(int id){
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  productclass where id="<<id;
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
-
+    return sql;
 }
-bool ProductClassDao::modifyClass(int id, string name, int employee_id, string createdate, string remark){
+string ProductClassDao::modifyClass(int id, string name, int employee_id, string createdate, string remark){
 
 
     stringstream sqlBuilder;
@@ -45,11 +44,10 @@ bool ProductClassDao::modifyClass(int id, string name, int employee_id, string c
                 "',remark='"<<remark<<"'  where id="<<id;
 
     string sql=sqlBuilder.str();
-
-    return modify(sql);
+    return sql;
 
 }
-map<string,string> ProductClassDao::getClassById(int id){
+string ProductClassDao::getClassById(int id){
 
 
     stringstream sqlBuilder;
@@ -57,12 +55,12 @@ map<string,string> ProductClassDao::getClassById(int id){
     string sql=sqlBuilder.str();
 
     map<string,string> deptInfo;
-    return getOne(sql);
+    return sql;
 
 
 }
-list<map<string,string>> ProductClassDao::selectClasses(string name,int employee_id,string remark,
-                                                        int pageSize,int currentPage){
+string ProductClassDao::selectClasses(string name,int employee_id,string remark,
+                                      int pageSize,int currentPage){
     stringstream sqlBuilder;
     sqlBuilder<<"select * from productclass";
     if(name!="" or remark!="" ){
@@ -83,8 +81,7 @@ list<map<string,string>> ProductClassDao::selectClasses(string name,int employee
 
     sqlBuilder<<" limit "<<(currentPage-1)*pageSize<<","<<pageSize;
     string sql=sqlBuilder.str();
-    list<map<string,string>> deptInfos;
-    return query(sql);
+    return sql;
 
 
 }

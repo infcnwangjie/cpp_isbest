@@ -4,7 +4,7 @@
 
 
 
-bool RoleMenuDao::addRoleMenu(int menuid ,int roleid){
+string RoleMenuDao::addRoleMenu(int menuid ,int roleid){
 
     stringstream sqlBuilder;
     sqlBuilder<<"insert into role_menu(menuid,roleid) values"<<"("<<menuid<<","
@@ -12,19 +12,19 @@ bool RoleMenuDao::addRoleMenu(int menuid ,int roleid){
 
     string sql=sqlBuilder.str();
 
-    return add(sql);
+    return sql;
 }
-bool RoleMenuDao::deleteRoleMenu(int roleId){
+string RoleMenuDao::deleteRoleMenu(int roleId){
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  role_menu where roleid="<<roleId;
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 }
-bool RoleMenuDao::deleteRoleMenuById(int roleId, int menuId){
+string RoleMenuDao::deleteRoleMenuById(int roleId, int menuId){
 
 
     stringstream sqlBuilder;
@@ -32,11 +32,11 @@ bool RoleMenuDao::deleteRoleMenuById(int roleId, int menuId){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 }
 
-map<string,string> RoleMenuDao::getRoleMenuByRoleId(int roleId){
+string RoleMenuDao::getRoleMenuByRoleId(int roleId){
 
     map<string,string> roleMenuInfo;
 
@@ -49,10 +49,10 @@ map<string,string> RoleMenuDao::getRoleMenuByRoleId(int roleId){
 
     cout<<sql<<endl;
 
-    return getOne(sql);
+    return sql;
 }
-list<map<string,string>> RoleMenuDao::selectRoleMenus(int roleId,int menuId,
-                                                      int pageSize,int currentPage){
+string RoleMenuDao::selectRoleMenus(int roleId,int menuId,
+                                    int pageSize,int currentPage){
     list<map<string,string>> roleMenuInfos;
 
 
@@ -74,6 +74,27 @@ list<map<string,string>> RoleMenuDao::selectRoleMenus(int roleId,int menuId,
 
     string sql=sqlBuilder.str();
 
-    return query(sql);
+    return sql;
+
+}
+
+string RoleMenuDao::selectRoleMenus(list<string> roleids){
+    list<map<string,string>> roleMenuInfos;
+
+
+    if(roleids.size()==0)return "";
+
+    stringstream sqlBuilder;
+    sqlBuilder<<" select * from menu where id in (SELECT a.menuid from role_menu a where roleid in (";
+
+    for(string roleid : roleids){
+        sqlBuilder<<roleid<<",";
+    }
+    sqlBuilder<<"-1"<<"))";
+
+
+    string sql=sqlBuilder.str();
+
+    return sql;
 
 }

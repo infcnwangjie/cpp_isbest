@@ -1,27 +1,27 @@
-#ifndef USERROLEDAO_H
-#define USERROLEDAO_H
+#ifndef USER_ROLEDAO_H
+#define USER_ROLEDAO_H
 #include "BaseDao.h"
-
-class UserRoleDao:protected BaseDao{
+#include <string>
+using namespace std;
+class UserRoleDao{
 
 public:
     UserRoleDao(){
 
     }
     ~UserRoleDao(){
-        delete connectPool;
+
     }
 
 
 public:
 
-    bool addRole(string name,string remark);
-    bool deleteRole(string name);
-    bool deleteRoleById(int id);
-    bool modifyRole(int id,string name,string remark);
-    map<string,string> getRoleById(int id);
-    list<map<string,string>> selectRoles(string name="",string remarks="",
-                                         int pageSize=3,int currentPage=2);
+    string addUserRole(int user_id,int role_id);
+    string deleteUserRole(int user_id,int role_id);
+    string deleteUserRoleById(int id);
+    string getUserRoleById(int id);
+    string selectRolesByUserId(int user_id=0,
+                               int pageSize=3,int currentPage=1);
 
 };
 

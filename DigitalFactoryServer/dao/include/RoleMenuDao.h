@@ -2,26 +2,27 @@
 #define USERROLEMENUDAO_H
 #include "BaseDao.h"
 
-class RoleMenuDao:protected BaseDao{
+class RoleMenuDao{
 
 public:
     RoleMenuDao(){
 
     }
     ~RoleMenuDao(){
-        delete connectPool;
+
     }
 
 
 public:
 
-    bool addRoleMenu(int menuid ,int roleid);
-    bool deleteRoleMenu(int  roleId);
-    bool deleteRoleMenuById(int roleId,int menuId);
+    string addRoleMenu(int menuid ,int roleid);
+    string deleteRoleMenu(int  roleId);
+    string deleteRoleMenuById(int roleId,int menuId);
 
-    map<string,string> getRoleMenuByRoleId(int roleId);
-    list<map<string,string>> selectRoleMenus(int roleId=0,int menuId=0,
-                                         int pageSize=3,int currentPage=2);
+    string getRoleMenuByRoleId(int roleId);
+    string selectRoleMenus(int roleId=0,int menuId=0,
+                                         int pageSize=3,int currentPage=1);
+    string selectRoleMenus(list<string> roleids);
 
 
 };

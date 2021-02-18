@@ -1,7 +1,7 @@
 #include "StaffPositionDao.h"
 
 
-bool StaffPositionDao::addStaffPosition(string name, string remark){
+string StaffPositionDao::addStaffPosition(string name, string remark){
 
 
     stringstream sqlBuilder;
@@ -9,11 +9,11 @@ bool StaffPositionDao::addStaffPosition(string name, string remark){
              <<remark<<"')";
 
     string sql=sqlBuilder.str();
-    return add(sql);
+    return sql;
 }
 
 
-bool StaffPositionDao::deleteStaffPosition(string name){
+string StaffPositionDao::deleteStaffPosition(string name){
 
 
     stringstream sqlBuilder;
@@ -21,21 +21,21 @@ bool StaffPositionDao::deleteStaffPosition(string name){
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 
 }
-bool StaffPositionDao::deleteStaffPositionById(int id){
+string StaffPositionDao::deleteStaffPositionById(int id){
 
     stringstream sqlBuilder;
     sqlBuilder<<"delete from  staff_position where id="<<id;
 
     string sql=sqlBuilder.str();
 
-    return deleteDatas(sql);
+    return sql;
 
 }
-bool StaffPositionDao::modifyStaffPosition(int id, string name, string remark){
+string StaffPositionDao::modifyStaffPosition(int id, string name, string remark){
 
 
     stringstream sqlBuilder;
@@ -44,10 +44,10 @@ bool StaffPositionDao::modifyStaffPosition(int id, string name, string remark){
 
     string sql=sqlBuilder.str();
 
-    return modify(sql);
+    return sql;
 
 }
-map<string,string> StaffPositionDao::getStaffPositionById(int id){
+string StaffPositionDao::getStaffPositionById(int id){
 
 
     stringstream sqlBuilder;
@@ -55,11 +55,11 @@ map<string,string> StaffPositionDao::getStaffPositionById(int id){
     string sql=sqlBuilder.str();
 
     map<string,string> deptInfo;
-    return getOne(sql);
+    return sql;
 
 
 }
-list<map<string,string>> StaffPositionDao::selectStaffPositions(string name,string remark,
+string StaffPositionDao::selectStaffPositions(string name,string remark,
                                               int pageSize,int currentPage){
     stringstream sqlBuilder;
     sqlBuilder<<"select * from staff_position";
@@ -75,8 +75,7 @@ list<map<string,string>> StaffPositionDao::selectStaffPositions(string name,stri
 
     sqlBuilder<<" limit "<<(currentPage-1)*pageSize<<","<<pageSize;
     string sql=sqlBuilder.str();
-    list<map<string,string>> deptInfos;
-    return query(sql);
+    return sql;
 
 
 }
