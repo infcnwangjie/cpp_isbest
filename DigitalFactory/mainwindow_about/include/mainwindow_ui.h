@@ -156,9 +156,9 @@ public:
 
 
 
-namespace Ui {
-class MainWindowUi: public MainWindowAbstractUi {};
-} // namespace Ui
+//namespace Ui {
+//class MainWindowUi: public MainWindowAbstractUi {};
+//} // namespace Ui
 
 QT_END_NAMESPACE
 

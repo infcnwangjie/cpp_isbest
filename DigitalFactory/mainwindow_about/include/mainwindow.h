@@ -6,6 +6,10 @@
 #include <QMdiSubWindow>
 #include <QVBoxLayout>
 //#include "loginform.h"
+#include "tinyjson.hpp"
+#include <cassert>
+
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindowUi;
@@ -26,8 +30,10 @@ public:
 public:
     void paintEvent(QPaintEvent *event);
 
+    void currentuserinfo();//当前用户信息
+
 private:
-    Ui::MainWindowNewUi *ui;
+    Ui::MainWindowUi *ui;
 //    QVBoxLayout *loginLayout;
 //    QMdiArea * mdiArea;
 //    QMdiSubWindow *loginFormMdiSubWindow;

@@ -5,19 +5,21 @@
 #include <QBitmap>
 #include <QPainter>
 #include <QDesktopWidget>
+using namespace tiny;
 using namespace Ui;
 
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new MainWindowNewUi)
+    , ui(new MainWindowUi)
 {
 
-        this->setWindowTitle("闪亮");
+    this->setWindowTitle("闪亮");
     this->setWindowIcon(QIcon(":/resource/images/xiaoren.png"));
 
 
     ui->setupUi(this);
+    connect(ui->userinfo_ActionToolBar,&QAction::triggered,this,&MainWindow::currentuserinfo);
     //    this->showNormal();
     //    this->setWindowFlags(this->windowFlags() &~ Qt::WindowMaximizeButtonHint);//禁止最大和最小化
 
@@ -31,11 +33,16 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
+//基本信息资料
+void MainWindow::currentuserinfo(){
+    qDebug("basicinformation");
+}
+
 void MainWindow::paintEvent(QPaintEvent *event){
 
-//    QPainter p(this);
+    //    QPainter p(this);
     //    p.drawRoundedRect(0, 0, width() - 1, height() - 1, 20, 20);
-//    p.drawPixmap(rect(),QPixmap(":/resource/images/loginbg.png"));
+    //    p.drawPixmap(rect(),QPixmap(":/resource/images/loginbg.png"));
 }
 
 MainWindow::~MainWindow()

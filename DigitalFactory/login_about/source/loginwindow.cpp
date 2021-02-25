@@ -74,9 +74,6 @@ void LoginWindow::connectServer(){
 */
 void LoginWindow::onlogin(){
 
-    //     if(connectStatus==false){
-    //         connectServer();
-    //     }
 
     auto user= this->loginDialog->ui->idEdit->text();
 
@@ -153,11 +150,13 @@ void LoginWindow::fetchLoginMessageFromServer(){
         string loginstatus=json.Get<string>("authorized");
         string name=json.Get<string>("name");
         string password=json.Get<string>("password");
+        xarray menus=json.Get<xarray>("menus");
+        xarray roles=json.Get<xarray>("roles");
 
 
         if(loginstatus=="true"){
             this->m_pTcpSocket->close();
-//            delete this->m_pTcpSocket;
+            //            delete this->m_pTcpSocket;
 
             this->mainWindow=new MainWindow;
             this->mainWindow->show();
@@ -166,10 +165,10 @@ void LoginWindow::fetchLoginMessageFromServer(){
         }else if(loginstatus=="false"){
             QMessageBox::warning(this,"错误提示","用户或密码错误");
             loginclick=false;
-//            this->m_pTcpSocket->close();
-//            delete this->m_pTcpSocket;
-//            initSocket();
-//            connectServer();
+            //            this->m_pTcpSocket->close();
+            //            delete this->m_pTcpSocket;
+            //            initSocket();
+            //            connectServer();
         }
 
     }
