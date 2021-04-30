@@ -7,7 +7,7 @@
 #include <QVBoxLayout>
 #include "loginform.h"
 //#include "mainwindow.h"
-
+#include "loginservice.h"
 
 #include <QTcpServer>
 #include <QTcpSocket>
@@ -41,11 +41,11 @@ private:
     QVBoxLayout *loginLayout;
     LoginForm  * loginDialog;// 登录窗体
     QTcpSocket * m_pTcpSocket;
-
     MainWindow * mainWindow;//主窗口
     LoginWindow *loginWindow;//登录窗口
     friend class MainWindow;
 
+    LoginService * loginService;
     //private slots:
 private  slots:
     void initSocket();

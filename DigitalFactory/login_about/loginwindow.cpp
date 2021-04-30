@@ -20,8 +20,8 @@ LoginWindow::LoginWindow(QWidget *parent)
 
 
     ui->setupUi(this);
-    //    this->showNormal();
-    //    this->setWindowFlags(this->windowFlags() &~ Qt::WindowMaximizeButtonHint);//禁止最大和最小化
+    //        this->showNormal();
+    this->setWindowFlags(this->windowFlags() &~ Qt::WindowMaximizeButtonHint);//禁止最大和最小化
 
     loginDialog->setStyleSheet ("background-color: rgb(255, 255, 255);");
     loginDialog->show();
@@ -32,8 +32,10 @@ LoginWindow::LoginWindow(QWidget *parent)
     //    QObject::connect(&this->processcore,&ImgProcessCore::finish,&this->afterProcessSlot,&AfterProcessSlot::receiveMsg);
     QObject::connect(this->loginDialog->ui->loginButton, &QPushButton::clicked,this, &LoginWindow::onlogin);
 
-    initSocket();//初始化socket
-    connectServer();//连接服务器
+    loginService=new LoginService();
+
+    //    initSocket();//初始化socket
+    //    connectServer();//连接服务器
 
 }
 
@@ -84,45 +86,55 @@ void LoginWindow::onlogin(){
         return;
     }
 
-    TinyJson loginJson;
-    loginJson["method"].Set("login");
+    //    TinyJson loginJson;
+    //    loginJson["method"].Set("login");
 
-    TinyJson loginData;
-    loginData["user"].Set(user.toStdString());
-    loginData["password"].Set(password.toStdString());
-
-
-
-    loginJson["data"].Set(loginData);
+    //    TinyJson loginData;
+    //    loginData["user"].Set(user.toStdString());
+    //    loginData["password"].Set(password.toStdString());
 
 
-    string str = loginJson.WriteJson();
 
-    qDebug() << QString::fromStdString(str) << endl;
+    //    loginJson["data"].Set(loginData);
 
 
-    QString jsonStr(str.data());
-    QByteArray jsonbytes;
-    jsonbytes.append(jsonStr);
+    //    string str = loginJson.WriteJson();
 
-    if(this->m_pTcpSocket==nullptr || !(this->m_pTcpSocket->isReadable() || this->m_pTcpSocket->isWritable())){
-        if(this->m_pTcpSocket!=nullptr){
-            this->m_pTcpSocket->close();
-        }
-        connectServer();
+    //    qDebug() << QString::fromStdString(str) << endl;
 
-    }
 
-    this->m_pTcpSocket->write(jsonbytes);
-    this->m_pTcpSocket->flush();
+    //    QString jsonStr(str.data());
+    //    QByteArray jsonbytes;
+    //    jsonbytes.append(jsonStr);
+
+    //    if(this->m_pTcpSocket==nullptr || !(this->m_pTcpSocket->isReadable() || this->m_pTcpSocket->isWritable())){
+    //        if(this->m_pTcpSocket!=nullptr){
+    //            this->m_pTcpSocket->close();
+    //        }
+    //        connectServer();
+
+    //    }
+
+    //    this->m_pTcpSocket->write(jsonbytes);
+    //    this->m_pTcpSocket->flush();
 
     loginclick=true;
+    bool loginstatus=loginService->login(user,password);
+
+
+    if(loginstatus){
+        this->mainWindow=new MainWindow;
+        this->mainWindow->show();
+        this->hide();
+    }
+
+
 
 }
 
 void LoginWindow::connected(){
-    qDebug()<<"连接成功!";
-    connectStatus=true;
+    //    qDebug()<<"连接成功!";
+    //    connectStatus=true;
     //    QString string = "Hello";
     //    QByteArray array;
     //    array.append(string);
@@ -134,44 +146,37 @@ void LoginWindow::connected(){
 
 void LoginWindow::fetchLoginMessageFromServer(){
 
+    //    if(loginclick==true && this->m_pTcpSocket->bytesAvailable()){
+    //        qDebug() << loginclick;
+    //        QByteArray arr=this->m_pTcpSocket->readAll();
+    //        qDebug() << arr;  //读取socket中的数据并打印
+    //        QString jsonInfo(arr);
+
+    //        TinyJson json;
+    //        json.ReadJson(jsonInfo.toStdString());
+
+    //        string loginstatus=json.Get<string>("authorized");
+    //        string name=json.Get<string>("name");
+    //        string password=json.Get<string>("password");
+    //        xarray menus=json.Get<xarray>("menus");
+    //        xarray roles=json.Get<xarray>("roles");
 
 
-    //    this->m_pTcpSocket->waitForReadyRead();
-
-    if(loginclick==true && this->m_pTcpSocket->bytesAvailable()){
-        qDebug() << loginclick;
-        QByteArray arr=this->m_pTcpSocket->readAll();
-        qDebug() << arr;  //读取socket中的数据并打印
-        QString jsonInfo(arr);
-
-        TinyJson json;
-        json.ReadJson(jsonInfo.toStdString());
-
-        string loginstatus=json.Get<string>("authorized");
-        string name=json.Get<string>("name");
-        string password=json.Get<string>("password");
-        xarray menus=json.Get<xarray>("menus");
-        xarray roles=json.Get<xarray>("roles");
+    //        if(loginstatus=="true"){
+    //            this->m_pTcpSocket->close();
 
 
-        if(loginstatus=="true"){
-            this->m_pTcpSocket->close();
-            //            delete this->m_pTcpSocket;
+    //            this->mainWindow=new MainWindow;
+    //            this->mainWindow->show();
+    //            this->hide();
 
-            this->mainWindow=new MainWindow;
-            this->mainWindow->show();
-            this->hide();
+    //        }else if(loginstatus=="false"){
+    //            QMessageBox::warning(this,"错误提示","用户或密码错误");
+    //            loginclick=false;
 
-        }else if(loginstatus=="false"){
-            QMessageBox::warning(this,"错误提示","用户或密码错误");
-            loginclick=false;
-            //            this->m_pTcpSocket->close();
-            //            delete this->m_pTcpSocket;
-            //            initSocket();
-            //            connectServer();
-        }
+    //        }
 
-    }
+
 
 
 }

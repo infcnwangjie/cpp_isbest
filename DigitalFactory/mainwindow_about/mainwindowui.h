@@ -40,11 +40,15 @@ public:
     QVBoxLayout *left_verticalLayout,*right_verticalLayout;//中间部分，分出来的 左侧，右侧
 
 
+    //    QHBoxLayout *topHorizontalLayout;
+    //    QPushButton * paidanTopButton;
+    //    QPushButton * caigouTopButton;
+
     QMenuBar *m_MenuBar;
-    QMenu *basicinformation_Menu,*businessentry_Menu,*accountreport_Menu,*system_Menu,*others_Menu;
+    QMenu *basicinformation_Menu,*system_Menu,*purchaseManage_Menu,*salesManage_Menu,*stocksManage_Menu;
 
     //基本信息相关action
-    QAction *productinfo_Action; //商品信息
+    QAction *basicinformation_Action; //基本信息
     QAction *stafferinfo_Action; //职员信息
     QAction *supplyerinfo_Action; //供应商信息
     QAction *customerinfo_Action; //客户信息
@@ -52,42 +56,27 @@ public:
     QAction *banksettlementaccounts_Action; //结算账号
     QAction * incomeExpenditure_Action;//收支项目
 
-    //业务录入相关action
-    QAction * sellList_Action; //销售单
-    QAction *sellReturnList_Action; //销售退货单
-    QAction *sellRetailList_Action; //零售单
-    QAction *purchaseList_Action; //进货单
-    QAction *purchaseReturnList_Action; //进货退货单
-    QAction *payments_Action; //付款单
-    QAction *income_Action; //收入单
-    QAction *outcome_Action; //支出单
-    QAction *transferslip_Action; //转账单
-    QAction *transferorder_Action; //调拨单
-    QAction *stockinorder_Action; //入库单
-    QAction *stockoutorder_Action; //出库单
+    //进货管理Action
+    QAction * jinhuoruku_Action; //进货入库
+    QAction *tuihuochuku_Action; //退货出库
+    QAction *jinhuodanjuchaxun_Action; //进货单据查询
+    QAction *tuihuodanjuchaxun_Action; //退货单据查询
+    QAction *dangqiankucun_Action; //当前库存
 
-    //报表查询
-    QAction * sellRanking_Action; //销售排行榜
-    QAction *salesAnalysis_Action; //销售分析
-    QAction *retailInquiry_Action; //零售查询
-    QAction *PurchaseStatistics_Action; //进货统计
-    QAction *profitStatics_Action; //利润统计
-    QAction *transactionAnalysis_Action; //往来分析
-    QAction *incomeAndExpending_Action; //收支项目表
-    QAction *receiptStatics_Action; //回款统计
-    QAction *settlementAccountInquiryp_Action; //结算账户查询
-    QAction *inventoryStatus_Action; //库存状况
-    QAction *otherWarehousingStatistics_Action; //其它出入库统计
-    QAction *weChatPaymentStatement_Action; //微信支付对账单
+
+
+
+
+    //销售管理
+    QAction * xiaoshouchuku_Action; //销售出库
+    QAction *kehutuihuo_Action; //客户退货
+    QAction *xiaoshoudanjuchaxun_Action; //销售单据查询
+    QAction *kehutuihuochaxun_Action; //客户退货查询
+
 
     //系统设置
     QAction * permissionSetting_Action; //权限设置
 
-    //其它功能
-    QAction * culculate_Action; //计算器
-    QAction * weChartSetting_Action; //微信设置
-    QAction * aliPaySetting_Action; //支付宝设置
-    QAction * calendar_Action; //日历
 
 
 
@@ -118,69 +107,79 @@ public:
 
     QStatusBar *statusbar;
 
+    void generatorToolBars(){
+        //QDebug()<<"生成toolbar";
+    }
 
     void create_top(QMainWindow *MainWindow){
         //创建菜单
         m_MenuBar=MainWindow->menuBar();
-        basicinformation_Menu = m_MenuBar->addMenu("【基本信息】");
-        productinfo_Action=basicinformation_Menu->addAction("产品信息");
-        stafferinfo_Action=basicinformation_Menu->addAction("职员信息");
-        supplyerinfo_Action=basicinformation_Menu->addAction("供应商信息");
-        customerinfo_Action=basicinformation_Menu->addAction("客户信息");
-        storehouseinfo_Action=basicinformation_Menu->addAction("仓库信息");
-        banksettlementaccounts_Action=basicinformation_Menu->addAction("结算账户");
-        incomeExpenditure_Action=basicinformation_Menu->addAction("收支项目");
+        basicinformation_Menu = m_MenuBar->addMenu("【基础资料】");
+        basicinformation_Action=new QAction(QString("&Open"));
+
+        //        basicinformation_Action->setShortcut(QKeySequence::);
+        basicinformation_Action->setStatusTip(QString("基础资料"));
+        basicinformation_Menu->addAction(basicinformation_Action);
+        //        connect(pNew, &QAction::triggered,
+        //               //Lambda 表达式
+        //               [=]()
+        //               {
+        //                   qDebug() << "已退出";
+        //               }
+
+        //               );
 
 
 
+        //        connect(basicinformation_Action, &QAction::triggered, this, &MainWindowUi::generatorToolBars));
 
-        businessentry_Menu = m_MenuBar->addMenu("【业务录入】");
-        sellList_Action=businessentry_Menu->addAction("销售单");
-        sellReturnList_Action=businessentry_Menu->addAction("销售退货单");
-        sellRetailList_Action=businessentry_Menu->addAction("零售单");
-        purchaseList_Action=businessentry_Menu->addAction("进货单");
-
-        purchaseReturnList_Action=businessentry_Menu->addAction("进货退货单");
-        payments_Action=businessentry_Menu->addAction("付款单");
-        income_Action=businessentry_Menu->addAction("收入单");
-        outcome_Action=businessentry_Menu->addAction("支出单");
-        transferslip_Action=businessentry_Menu->addAction("转账单");
-        transferorder_Action=businessentry_Menu->addAction("调拨单");
-        stockinorder_Action=businessentry_Menu->addAction("入库单");
-        stockoutorder_Action=businessentry_Menu->addAction("出库单");
-
-        //报表查询
-        accountreport_Menu=m_MenuBar->addMenu("【报表查询】");
-        sellRanking_Action=accountreport_Menu->addAction("销售排行榜");
-        salesAnalysis_Action=accountreport_Menu->addAction("销售分析");
-        retailInquiry_Action=accountreport_Menu->addAction("零售查询");
-        PurchaseStatistics_Action=accountreport_Menu->addAction("进货统计");
-        profitStatics_Action=accountreport_Menu->addAction("利润统计");
-        transactionAnalysis_Action=accountreport_Menu->addAction("往来分析");
-        incomeAndExpending_Action=accountreport_Menu->addAction("收支项目表");
-        receiptStatics_Action=accountreport_Menu->addAction("回款统计");
-        settlementAccountInquiryp_Action=accountreport_Menu->addAction("结算账户查询");
-        inventoryStatus_Action=accountreport_Menu->addAction("库存状况");
-        otherWarehousingStatistics_Action=accountreport_Menu->addAction("其它出入库统计");
-        weChatPaymentStatement_Action=accountreport_Menu->addAction("微信支付对账单");
-
+        //        productinfo_Action=basicinformation_Menu->addAction("产品信息");
+        //        stafferinfo_Action=basicinformation_Menu->addAction("职员信息");
+        //        supplyerinfo_Action=basicinformation_Menu->addAction("供应商信息");
+        //        customerinfo_Action=basicinformation_Menu->addAction("客户信息");
+        //        storehouseinfo_Action=basicinformation_Menu->addAction("仓库信息");
+        //        banksettlementaccounts_Action=basicinformation_Menu->addAction("结算账户");
+        //        incomeExpenditure_Action=basicinformation_Menu->addAction("收支项目");
 
 
         //系统设置
         system_Menu=m_MenuBar->addMenu("【系统设置】");
         permissionSetting_Action=system_Menu->addAction("权限设置");
+        system_Menu->addAction(permissionSetting_Action);
 
 
-        //其他事项
-        others_Menu =m_MenuBar->addMenu("【其他事项】");
-        culculate_Action=others_Menu->addAction("计算器");
-        weChartSetting_Action=others_Menu->addAction("微信设置");
-        aliPaySetting_Action=others_Menu->addAction("支付宝设置");
-        calendar_Action=others_Menu->addAction("日历");
+        //进货管理
+        purchaseManage_Menu = m_MenuBar->addMenu("【进货管理】");
+        jinhuoruku_Action=new QAction(QString("进货入库"));
+        tuihuochuku_Action=new QAction(QString("退货入库"));
+        jinhuodanjuchaxun_Action=new QAction(QString("进货单据查询"));
+        tuihuodanjuchaxun_Action=new QAction(QString("退货单据查询"));
+        dangqiankucun_Action=new QAction(QString("当前库存"));
+        purchaseManage_Menu->addAction(jinhuoruku_Action);
+        purchaseManage_Menu->addAction(tuihuochuku_Action);
+        purchaseManage_Menu->addAction(jinhuodanjuchaxun_Action);
+        purchaseManage_Menu->addAction(tuihuodanjuchaxun_Action);
+        purchaseManage_Menu->addAction(dangqiankucun_Action);
+
+
+
+
+        //销售管理
+        salesManage_Menu=m_MenuBar->addMenu("【销售管理】");
+        xiaoshouchuku_Action=new QAction(QString("销售出库"));
+        kehutuihuo_Action=new QAction(QString("客户退货"));
+        xiaoshoudanjuchaxun_Action=new QAction(QString("销售单据查询"));
+        kehutuihuochaxun_Action=new QAction(QString("客户退货单据查询"));
+        salesManage_Menu->addAction(xiaoshouchuku_Action);
+        salesManage_Menu->addAction(kehutuihuo_Action);
+        salesManage_Menu->addAction(xiaoshoudanjuchaxun_Action);
+        salesManage_Menu->addAction(kehutuihuochaxun_Action);
 
 
         m_MenuBar->show();
+        m_MenuBar->setStyleSheet("background-color:#4682B4;");
         verticalLayout->addWidget(m_MenuBar);
+        //        verticalLayout->addLayout(topHorizontalLayout);
 
 
         //创建工具栏
@@ -191,7 +190,7 @@ public:
 
         userinfo_ActionToolBar = new QAction(QStringLiteral("ToolBar1"));
         userinfo_ActionToolBar->setIcon(QIcon(":/resource/images/xiaoren.png"));
-        userinfo_ActionToolBar->setText("当前用户");
+        userinfo_ActionToolBar->setText("订单管理");
 
 
         //        supplymarket_ActionToolBar2 = new QAction(QStringLiteral("ToolBar2"));
@@ -229,6 +228,7 @@ public:
 
 
         m_ToolBar->addActions(m_ToolBarList);
+        m_ToolBar->setStyleSheet("background-color:#E9F1FF;");
         m_ToolBar->show();
 
 
@@ -238,51 +238,56 @@ public:
 
     void create_middlle(QMainWindow *MainWindow){
 
-        basicInformation_pushButton=new QPushButton("基本信息");
-        basicInformation_pushButton->show();
+        //        basicInformation_pushButton=new QPushButton("基本信息");
+        //        basicInformation_pushButton->show();
         businessentry_pushButton=new QPushButton("业务录入");
         accountreport_pushButton=new QPushButton("报表查询");
         systemsetting_pushButton=new QPushButton("系统设置");
         others_pushButton=new QPushButton("其它");
 
 
-        left_verticalLayout->addWidget(basicInformation_pushButton);
-        basicListWidget=new QListWidget();
-        basicListWidget->setMaximumWidth(200);
 
-        QListWidgetItem *productInfo=new QListWidgetItem();
-        productInfo->setText("产品信息");
-        productInfo->setIcon(QIcon(":/resource/images/logo.jpg"));
+        //        basicListWidget=new QListWidget();
+        //        basicListWidget->setMaximumWidth(200);
 
-        basicListWidget->addItem(productInfo);
+        //        QListWidgetItem *productInfo=new QListWidgetItem();
+        //        productInfo->setText("产品信息");
+        //        productInfo->setIcon(QIcon(":/resource/images/logo.jpg"));
 
-
-        QListWidgetItem *staffInfo=new QListWidgetItem();
-        staffInfo->setText("职员信息");
-        basicListWidget->addItem(staffInfo);
-
-        QListWidgetItem *supplierInfo=new QListWidgetItem();
-        supplierInfo->setText("供应商信息");
-
-        basicListWidget->addItem(supplierInfo);
-
-        left_verticalLayout->addWidget(basicListWidget);
+        //        basicListWidget->addItem(productInfo);
 
 
+        //        QListWidgetItem *staffInfo=new QListWidgetItem();
+        //        staffInfo->setText("职员信息");
+        //        basicListWidget->addItem(staffInfo);
+
+        //        QListWidgetItem *supplierInfo=new QListWidgetItem();
+        //        supplierInfo->setText("供应商信息");
+
+        //        basicListWidget->addItem(supplierInfo);
+
+
+        //        basicListWidget->setStyleSheet("background-color:#4682B4;");
+
+        //        left_verticalLayout->addWidget(basicListWidget);
 
 
 
 
 
+
+
+        businessentry_pushButton->setStyleSheet("background-color:#4682B4;");
+        accountreport_pushButton->setStyleSheet("background-color:#4682B4;");
+        systemsetting_pushButton->setStyleSheet("background-color:#4682B4;");
+        //QPushButton:hover{background-color:rgb(14, 220, 0);border-radius: 10px;color: rgb(0, 0, 0);}
+        others_pushButton->setStyleSheet("background-color:#4682B4;");
 
 
         left_verticalLayout->addWidget(businessentry_pushButton);
         left_verticalLayout->addWidget(accountreport_pushButton);
         left_verticalLayout->addWidget(systemsetting_pushButton);
         left_verticalLayout->addWidget(others_pushButton);
-
-
-
 
 
 

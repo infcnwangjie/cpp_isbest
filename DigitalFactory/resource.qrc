@@ -6,4 +6,5 @@
         <file>images/gxgl.png</file>
         <file>images/jbzl.png</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

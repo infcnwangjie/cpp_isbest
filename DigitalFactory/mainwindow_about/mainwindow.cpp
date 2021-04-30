@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "mainwindow_ui.h"
 #include "mainwindowui.h"
 //#include "login_form_ui.h"
 #include <QBitmap>

@@ -1,0 +1,25 @@
+/* 正常状态或者鼠标松开按钮的状态，按钮颜色 */
+QPushButton
+{
+    background-color:rgb(240,255,255);
+    color: rgb(0, 0, 2);
+    border-style: outset;
+    border-color: beige;
+    border-radius: 10px;
+}
+
+/* hover按钮悬浮，鼠标悬浮在按钮上的状态，按钮颜色 */
+ QPushButton:hover
+{
+    background-color:rgb(14, 220, 0);
+    border-radius: 10px;
+    color: rgb(0, 0, 0);
+}
+
+ /* 鼠标按下按钮时的状态，按钮颜色 */
+QPushButton:checked
+{
+    background-color:rgb(14, 170, 79);
+    border-radius: 10px;
+    color: rgb(255, 255, 0);
+}

@@ -5,10 +5,28 @@
 #include <QApplication>
 #include <iostream>
 #include<string>
+
+
+
+
+#include "QString"
+#include "user.h"
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonDocument>
+#include <sstream>
+#include<iostream>
+
+
 using namespace  std;
 
 int main(int argc, char *argv[])
 {
+
+
+
+
 
     QApplication a(argc, argv);
     LoginWindow w;
